@@ -1,0 +1,21 @@
+nav {
+  background-color: rgb(135, 135, 110);
+  height: 50px;
+  display: inline-block;
+  width: 100%;
+  
+  a {
+    background-color: rgb(150, 150, 130);
+    margin: 5px 5px;    
+    border-radius: 15px;
+    padding: 10px;
+    display: inline-block;
+    text-decoration: none;
+    color: white;
+    &:hover {
+      cursor: pointer;
+      background-color: rgb(165, 165, 140);
+      transition: background-color 0.2s;
+    }
+  }
+}
