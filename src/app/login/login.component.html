@@ -1,1 +1,25 @@
-<p>login works!</p>
+<form action="home" [formGroup]="loginForm" (ngSubmit)="submitForm()">
+  <label for="username" minlength="4" >Username:</label>
+  <input type="text" id="username" placeholder="Enter username" class="input-field" formControlName="username" required minLength="4">
+  <label for="password">Password:</label>
+  <input type="password" id="password" placeholder="Enter password" class="input-field" formControlName="password" required>
+  <button class="input-field">Submit</button>
+</form>
+
+@if (this.loginForm.controls.username.touched && this.loginForm.controls.username.invalid) {
+  <div id="warning-message">
+    <p>Username must be at least 4 characters long.</p>
+  </div>
+}
+
+@if (this.loginForm.controls.password.touched && this.loginForm.controls.password.invalid) {
+  <div id="warning-message">
+    <p>Password must be at least 10 characters long.</p>
+  </div>
+}
+
+@if (this.loginForm.controls.username.value?.match(".*\\s.*") || this.loginForm.controls.password.value?.match(".*\\s.*")) {
+  <div id="warning-message">
+    <p>No white spaces allowed in username or password field.</p>
+  </div>
+}

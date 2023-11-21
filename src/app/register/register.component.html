@@ -1,1 +1,56 @@
-<p>register works!</p>
+<form action="home" [formGroup]="registerForm" (ngSubmit)="submitForm()">
+  <label for="username" minlength="4">Username:</label>
+  <input
+    type="text"
+    id="username"
+    placeholder="Enter username"
+    class="input-field"
+    formControlName="username"
+    required
+    minLength="4"
+  />
+  <div formGroupName="passwordGroup" id="password-group">
+    <label for="password">Password:</label>
+    <input
+      type="password"
+      id="password"
+      placeholder="Enter password"
+      class="input-field"
+      formControlName="password"
+    />
+    <label for="repassword">Repeat password:</label>
+    <input
+      type="password"
+      id="repassword"
+      placeholder="Repeat password"
+      class="input-field"
+      formControlName="repassword"
+    />
+  </div>
+  <button class="input-field">Submit</button>
+</form>
+
+@if (this.registerForm.controls.username.touched &&
+this.registerForm.controls.username.invalid) {
+<div id="warning-message">
+  <p>Username must be at least 4 characters long.</p>
+</div>
+} @if (this.registerForm.controls.passwordGroup.controls.password.touched &&
+this.registerForm.controls.passwordGroup.controls.password.invalid) {
+<div id="warning-message">
+  <p>Password must be at least 10 characters long.</p>
+</div>
+} @if (this.registerForm.controls.passwordGroup.controls.password.value !==
+this.registerForm.controls.passwordGroup.controls.repassword.value) {
+<div id="warning-message">
+  <p>Passwords must match!</p>
+</div>
+} @if (this.registerForm.controls.username.value?.match(".*\\s.*") ||
+this.registerForm.controls.passwordGroup.controls.password.value?.match(".*\\s.*")
+||
+this.registerForm.controls.passwordGroup.controls.repassword.value?.match(".*\\s.*"))
+{
+<div id="warning-message">
+  <p>No whitespaces are allowed!</p>
+</div>
+}

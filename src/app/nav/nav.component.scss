@@ -1,12 +1,12 @@
 nav {
   background-color: rgb(135, 135, 110);
-  height: 50px;
+  height: fit-content;
   display: inline-block;
   width: 100%;
   
   a {
     background-color: rgb(150, 150, 130);
-    margin: 5px 5px;    
+    margin: 5px 0;    
     border-radius: 15px;
     padding: 10px;
     display: inline-block;

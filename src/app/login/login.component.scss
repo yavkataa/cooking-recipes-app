@@ -1,0 +1,37 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.input-field {
+  max-width: 200px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 15px;
+  margin-top: 5px;
+  border: 1px solid gray;
+  text-align: center;
+}
+
+button {
+  background-color: rgb(150, 150, 130);
+  color: white;
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(165, 165, 140);
+    transition: background-color 0.2s;
+  }
+}
+
+#warning-message {
+  color: white;
+  background-color: darkred;
+  padding: 10px;
+  margin: 20px auto 0;
+  height: fit-content;
+  max-width: 200px;
+  border-radius: 15px;
+}
+
