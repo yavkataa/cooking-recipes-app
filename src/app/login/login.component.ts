@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
+  providers: [],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -33,11 +34,17 @@ export class LoginComponent {
   });
 
   submitForm() {
+    let loginUser = this.loginForm.controls.username.value;
+    let loginPassword = this.loginForm.controls.password.value;
+
     if (this.loginForm.invalid) {
-      return
+      return;
     }
 
-    if (this.loginForm.controls.username.value?.match(".*\\s.*") || this.loginForm.controls.password.value?.match(".*\\s.*")) {return}
+    if (loginUser?.match('.*\\s.*') || loginPassword?.match('.*\\s.*')) {
+      return;
+    }
+
     console.log(
       'Form submit successfully' +
         this.loginForm.value.username +

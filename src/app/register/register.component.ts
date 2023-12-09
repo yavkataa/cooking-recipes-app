@@ -7,7 +7,6 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { matchPasswordsValidator } from '../shared/match-passwords.validator';
 
 @Component({
   selector: 'app-register',
