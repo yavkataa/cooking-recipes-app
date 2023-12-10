@@ -3,7 +3,15 @@ const mongoose = require("mongoose");
 const express = require("express");
 const morgan = require("morgan");
 const bcryptjs = require("bcryptjs");
-const { MONGO_STRING, MONGO_STRING_OPTIONS, PORT } = require("./server-config");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+const {
+  MONGO_STRING,
+  MONGO_STRING_OPTIONS,
+  PORT,
+  JWT_SECRET_STRING,
+} = require("./server-config");
+const { resolveSoa } = require("dns");
 const { Schema } = mongoose;
 const DB_NAME = "recipes-db";
 const RECIPE_COLLECTION = "recipes";
@@ -12,6 +20,8 @@ const USER_COLLECTION = "users";
 //instantiate express and morgan logging
 const app = express();
 app.use(morgan("tiny"));
+app.use(express.json());
+app.use(cookieParser());
 
 //create an instance of the mongo client to use for REST
 const client = new MongoClient(MONGO_STRING, {
@@ -22,14 +32,19 @@ const client = new MongoClient(MONGO_STRING, {
   },
 });
 
+try {
+  mongoose.connect(`${MONGO_STRING + DB_NAME + MONGO_STRING_OPTIONS}`);
+  console.log(`Mongoose successfully connected to DB.`);
+} catch (err) {
+  console.log(`Mongoose could not connect to DB: ${err}`);
+}
+
 //create a schema for the recipe documents in the DB
 const recipeSchema = new Schema({
   title: String, // String is shorthand for {type: String}
   author: String,
   description: String,
-  ingredients: [
-    { amount: String, units: String, ingredient: String },
-  ],
+  ingredients: [{ amount: String, units: String, ingredient: String }],
   images: [{ url: String }],
   date: { type: Date, default: Date.now },
   meta: {
@@ -40,41 +55,144 @@ const recipeSchema = new Schema({
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
 
+//create a schema for the user documents in the DB
+const userSchema = new Schema({
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  password: {
+    type: String,
+    minlength: 6,
+    required: true,
+  },
+  role: {
+    type: String,
+    default: "Basic",
+    required: true,
+  },
+});
 
-mongoose.connect(
-  `${MONGO_STRING + RECIPE_COLLECTION + MONGO_STRING_OPTIONS}`
-);
+const User = mongoose.model("User", userSchema);
 
-const recipe = new Recipe ({
+const recipe = new Recipe({
   title: "Delicious BananaBread", // String is shorthand for {type: String}
   author: "Chef Boyarde",
   description:
     "An easy and moist Banana Bread Recipe that is loaded with bananas, tangy-sweet raisins, and toasted walnuts. This is one of our favorite overripe banana recipes with hundreds of 5-star reviews.",
   ingredients: [
-    { amount: '3', units: "", ingredient: "overripe bananas" },
-    { amount: 'half', units: "cup", ingredient: "unsalted butter" },
-    { amount: 'quarter', units: "cup", ingredient: "granulated sugar" },
-    { amount: '2', units: "", ingredient: "large eggs, lightly beaten" },
-    { amount: '1.5', units: "cups", ingredient: "all-purpose white flour" },
-    { amount: '1', units: "tsp", ingredient: "baking soda" },
-    { amount: 'half', units: "tsp", ingredient: "salt" },
-    { amount: 'half', units: "tsp", ingredient: "vanilla extract" },
-    { amount: '1', units: "cup", ingredient: "walnuts" },
-    { amount: 'half', units: "cup", ingredient: "raisins" },
+    { amount: "3", units: "", ingredient: "overripe bananas" },
+    { amount: "half", units: "cup", ingredient: "unsalted butter" },
+    { amount: "quarter", units: "cup", ingredient: "granulated sugar" },
+    { amount: "2", units: "", ingredient: "large eggs, lightly beaten" },
+    { amount: "1.5", units: "cups", ingredient: "all-purpose white flour" },
+    { amount: "1", units: "tsp", ingredient: "baking soda" },
+    { amount: "half", units: "tsp", ingredient: "salt" },
+    { amount: "half", units: "tsp", ingredient: "vanilla extract" },
+    { amount: "1", units: "cup", ingredient: "walnuts" },
+    { amount: "half", units: "cup", ingredient: "raisins" },
   ],
-  images: [{ url: "https://natashaskitchen.com/wp-content/uploads/2018/05/Banana-Bread-Recipe-7.jpg" }],
+  images: [
+    {
+      url: "https://natashaskitchen.com/wp-content/uploads/2018/05/Banana-Bread-Recipe-7.jpg",
+    },
+  ],
   meta: {
     likes: 56,
     favourites: 12,
   },
 });
 
-recipe.save().then(() => {
-  console.log('Recipe saved successfully!');
+// recipe
+//   .save()
+//   .then(() => {
+//     console.log("Recipe saved successfully!");
+//   })
+//   .catch((err) => {
+//     console.log(`Recipe could not be saved: ${err}`);
+//   });
 
-}).catch((err) => {
-  console.log(`Recipe could not be saved: ${err}`);
-});
+const register = async (req, res, next) => {
+  const { username, password } = req.body;
+
+  if (password.length < 6) {
+    return res.status(400).send("Password is shorter than 6 characters");
+  }
+
+  bcryptjs.hash(password, 10).then(async (hash) => {
+    await User.create({
+      username,
+      password: hash,
+    })
+      .then((user) => {
+        const maxAge = 3 * 60 * 60;
+        const token = jwt.sign(
+          { id: user._id, username, role: user.role },
+          JWT_SECRET_STRING,
+          { expiresIn: maxAge }
+        );
+        res.cookie("jwt", token, {
+          httpOnly: true,
+          maxAge: maxAge * 1000,
+        });
+        res.status(201).send(`User successfully created: ${user._id}`);
+      })
+      .catch((err) => {
+        res.status(401).send(`User already exists`);
+      });
+  });
+};
+
+const login = async (req, res, next) => {
+  const { username, password } = req.body;
+  try {
+    const findUser = await User.findOne({ username });
+
+    if (!findUser) {
+      res.status(401).send(`User not found`);
+    }
+
+    bcryptjs.compare(password, findUser.password).then((result) => {
+      if (result) {
+        const maxAge = 3 * 60 * 60;
+        const token = jwt.sign(
+          { id: findUser._id, username, role: findUser.role },
+          JWT_SECRET_STRING,
+          { expiresIn: maxAge }
+        );
+        res.cookie("jwt", token, {
+          httpOnly: true,
+          maxAge: maxAge * 1000,
+        });
+        res.status(201).send(`User successfully logged in ${findUser._id}`);
+      } else {
+        res.status(400).send("Incorrect password");
+      }
+    });
+  } catch (err) {
+    res.status(400).send(`An error occurred: ${err}`);
+  }
+};
+
+const auth = (req, res, next) => {
+  const token = req.cookies.jwt;
+  if (token) {
+    jwt.verify(token, JWT_SECRET_STRING, (err, decodedToken) => {
+      if (err) {
+        return res.status(401).send(`Not authorized`);
+      } else {
+        if (decodedToken.role !== "Basic" && decodedToken.role !== "Admin") {
+          return res.status(401).send(`Not authorized`);
+        } else {
+          next();
+        }
+      }
+    })
+  } else {
+    return res.status(401).send(`Not authorized, no token found`);
+  }
+}
 
 const checkDBConnection = async () => {
   console.log("Checking DB connectivity on startup...");
@@ -88,7 +206,20 @@ const checkDBConnection = async () => {
   }
 };
 
-app.listen(PORT, () => {
+app.get("/logout", (req, res) => {
+  res.cookie("jwt", "", { maxAge: "1" })
+  res.redirect("/")
+})
+
+app.post("/register", register);
+app.post("/login", login);
+
+const server = app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
   checkDBConnection();
+});
+
+process.on("unhandledRejection", (err) => {
+  console.log(`An error occurred: ${err.message}`);
+  server.close(() => process.exit(1));
 });
