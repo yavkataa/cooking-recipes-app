@@ -215,7 +215,24 @@ const checkDBConnection = async () => {
   }
 };
 
+const getRecipes = async () => {
+  const recipes = await client
+    .db(DB_NAME)
+    .collection(RECIPE_COLLECTION)
+    .find().toArray();
+  console.log(recipes);
+  return recipes;
+};
 
+app.get("/api/recipes", auth, (req, res, next) => {
+  getRecipes()
+    .then((recipes) => {
+      res.status(200).send(recipes);
+    })
+    .catch((err) => {
+      res.status(400).json({ message: `Encounterted error: ${err}` });
+    });
+});
 
 app.get("/api/logout", (req, res) => {
   res.cookie("jwt", "", { maxAge: "1" });
