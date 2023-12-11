@@ -54,11 +54,14 @@ export class LoginComponent {
       return;
     }
 
-    let result = this.api.login(loginUser, loginPassword); 
+    let result = this.api.login(loginUser, loginPassword);     
 
     result.subscribe({
-      next (result) {
-        console.log(result);        
+      next: (result) => {
+        this.api.clearLoggedUserData();
+        this.api.storeLoggedUserData(result);
+        this.api.loggedIn = true;
+        this.router.navigate(['/login-landing']);
       }
     })
 

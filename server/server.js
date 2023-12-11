@@ -139,9 +139,10 @@ const register = async (req, res, next) => {
           maxAge: maxAge * 1000,
         });
         res.set("Access-Control-Allow-Credentials", req.hostname);
-        res
-          .status(201)
-          .json({ message: `User successfully created: ${user._id}` });
+        res.status(201).json({
+          username: username,
+          _id: user._id,
+        });
       })
       .catch((err) => {
         res.status(401).json({ message: `Error ${err}` });
@@ -172,9 +173,10 @@ const login = async (req, res, next) => {
           maxAge: maxAge * 1000,
         });
         res.set("Access-Control-Allow-Credentials", req.hostname);
-        res
-          .status(201)
-          .json({ message: `User successfully logged in ${findUser._id}` });
+        res.status(201).json({
+          username: findUser.username,
+          _id: findUser._id,
+        });
       } else {
         return res.status(400).json({ message: "Incorrect password" });
       }
@@ -219,7 +221,8 @@ const getRecipes = async () => {
   const recipes = await client
     .db(DB_NAME)
     .collection(RECIPE_COLLECTION)
-    .find().toArray();
+    .find()
+    .toArray();
   console.log(recipes);
   return recipes;
 };
@@ -233,6 +236,14 @@ app.get("/api/recipes", auth, (req, res, next) => {
       res.status(400).json({ message: `Encounterted error: ${err}` });
     });
 });
+
+app.get('/api/login-verify', auth, (req, res, next) => {
+  const token = req.cookies.jwt;
+  jwt.verify(token, JWT_SECRET_STRING, (err, decodedToken) => {
+    const userInfo = {username: decodedToken.username, _id: decodedToken.id};
+    res.status(200).json(userInfo);
+  })
+})
 
 app.get("/api/logout", (req, res) => {
   res.cookie("jwt", "", { maxAge: "1" });

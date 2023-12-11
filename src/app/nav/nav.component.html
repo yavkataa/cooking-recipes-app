@@ -2,6 +2,10 @@
   <a href="">Home</a>
   <a href="about">About</a>
   <a href="contacts">Contacts</a>
+  @if (!this.api.loggedIn) {
   <a href="login">Login</a>
   <a href="register">Register</a>
+  } @if (this.api.loggedIn) {
+  <a href="logout">Logout</a>
+  }
 </nav>

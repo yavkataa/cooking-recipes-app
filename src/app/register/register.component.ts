@@ -75,8 +75,10 @@ export class RegisterComponent {
     let result = this.api.register(registerUser, registerPassword);
 
     result.subscribe({
-      next (result) {
-        console.log(result);
+      next: (result) => {
+        this.api.clearLoggedUserData();
+        this.api.storeLoggedUserData(result);
+        this.router.navigate(['/login-landing']);
       }
     })
 
