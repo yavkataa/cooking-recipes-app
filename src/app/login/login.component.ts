@@ -7,19 +7,24 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from '../api.service';
+import { HttpClientModule } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  providers: [],
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  providers: [ApiService, CookieService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   router: Router;
-  constructor(router: Router) {
+  api: ApiService;
+  constructor(router: Router, api: ApiService) {
     this.router = router;
+    this.api = api;
   }
 
   loginForm = new FormGroup({
@@ -33,9 +38,9 @@ export class LoginComponent {
     ]),
   });
 
-  submitForm() {
-    let loginUser = this.loginForm.controls.username.value;
-    let loginPassword = this.loginForm.controls.password.value;
+  submitForm(): void {
+    const loginUser = this.loginForm.controls.username.value;
+    const loginPassword = this.loginForm.controls.password.value;
 
     if (this.loginForm.invalid) {
       return;
@@ -45,13 +50,18 @@ export class LoginComponent {
       return;
     }
 
-    console.log(
-      'Form submit successfully' +
-        this.loginForm.value.username +
-        '/' +
-        this.loginForm.value.password
-    );
+    if (!loginUser || !loginPassword) {
+      return;
+    }
 
-    this.router.navigate(['home']);
+    let result = this.api.login(loginUser, loginPassword); 
+
+    result.subscribe({
+      next (result) {
+        console.log(result);        
+      }
+    })
+
+    // this.router.navigate(['home']);
   }
 }

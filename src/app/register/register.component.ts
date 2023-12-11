@@ -7,6 +7,7 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from '../api.service';
 
 @Component({
   selector: 'app-register',
@@ -17,8 +18,10 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
   router: Router;
-  constructor(router: Router) {
+  api: ApiService;
+  constructor(router: Router, api: ApiService) {
     this.router = router;
+    this.api = api;
   }
 
   registerForm = new FormGroup({
@@ -39,6 +42,10 @@ export class RegisterComponent {
   });
 
   submitForm() {
+    const registerUser = this.registerForm.controls.username.value;
+    const registerPassword =
+      this.registerForm.controls.passwordGroup.controls.password.value;
+
     if (this.registerForm.invalid) {
       return;
     }
@@ -61,15 +68,18 @@ export class RegisterComponent {
       return;
     }
 
-    console.log(
-      'Form submit successfully' +
-        this.registerForm.value.username +
-        '/' +
-        this.registerForm.value.passwordGroup?.password +
-        '|' +
-        this.registerForm.value.passwordGroup?.repassword
-    );
+    if (!registerUser || !registerPassword) {
+      return;
+    }
 
-    this.router.navigate(['home']);
+    let result = this.api.register(registerUser, registerPassword);
+
+    result.subscribe({
+      next (result) {
+        console.log(result);
+      }
+    })
+
+    // this.router.navigate(['home']);
   }
 }

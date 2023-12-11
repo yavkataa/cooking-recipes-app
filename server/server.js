@@ -5,13 +5,13 @@ const morgan = require("morgan");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
 const {
   MONGO_STRING,
   MONGO_STRING_OPTIONS,
   PORT,
   JWT_SECRET_STRING,
 } = require("./server-config");
-const { resolveSoa } = require("dns");
 const { Schema } = mongoose;
 const DB_NAME = "recipes-db";
 const RECIPE_COLLECTION = "recipes";
@@ -19,12 +19,13 @@ const USER_COLLECTION = "users";
 
 //instantiate express and morgan logging
 const app = express();
-app.use(morgan("tiny"));
+app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors({ credentials: true }));
 
 //create an instance of the mongo client to use for REST
-const client = new MongoClient(MONGO_STRING, {
+const client = new MongoClient(MONGO_STRING + MONGO_STRING_OPTIONS, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -113,6 +114,7 @@ const recipe = new Recipe({
 //     console.log(`Recipe could not be saved: ${err}`);
 //   });
 
+//User register authentication logic
 const register = async (req, res, next) => {
   const { username, password } = req.body;
 
@@ -136,21 +138,25 @@ const register = async (req, res, next) => {
           httpOnly: true,
           maxAge: maxAge * 1000,
         });
-        res.status(201).send(`User successfully created: ${user._id}`);
+        res.set("Access-Control-Allow-Credentials", req.hostname);
+        res
+          .status(201)
+          .json({ message: `User successfully created: ${user._id}` });
       })
       .catch((err) => {
-        res.status(401).send(`User already exists`);
+        res.status(401).json({ message: `Error ${err}` });
       });
   });
 };
 
+//User login authentication logic
 const login = async (req, res, next) => {
   const { username, password } = req.body;
   try {
     const findUser = await User.findOne({ username });
 
     if (!findUser) {
-      res.status(401).send(`User not found`);
+      return res.status(401).json({ message: `User not found` });
     }
 
     bcryptjs.compare(password, findUser.password).then((result) => {
@@ -165,37 +171,40 @@ const login = async (req, res, next) => {
           httpOnly: true,
           maxAge: maxAge * 1000,
         });
-        res.status(201).send(`User successfully logged in ${findUser._id}`);
+        res.set("Access-Control-Allow-Credentials", req.hostname);
+        res
+          .status(201)
+          .json({ message: `User successfully logged in ${findUser._id}` });
       } else {
-        res.status(400).send("Incorrect password");
+        return res.status(400).json({ message: "Incorrect password" });
       }
     });
   } catch (err) {
-    res.status(400).send(`An error occurred: ${err}`);
+    return res.status(400).json({ message: `An error occurred: ${err}` });
   }
 };
 
+//Authentication verification with cookie
 const auth = (req, res, next) => {
   const token = req.cookies.jwt;
   if (token) {
     jwt.verify(token, JWT_SECRET_STRING, (err, decodedToken) => {
       if (err) {
-        return res.status(401).send(`Not authorized`);
+        return res.status(401).json({ message: `Not authorized` });
       } else {
         if (decodedToken.role !== "Basic" && decodedToken.role !== "Admin") {
-          return res.status(401).send(`Not authorized`);
+          return res.status(401).json({ message: `Not authorized` });
         } else {
           next();
         }
       }
-    })
+    });
   } else {
-    return res.status(401).send(`Not authorized, no token found`);
+    return res.status(401).json({ message: `Not authorized, no token found` });
   }
-}
+};
 
 const checkDBConnection = async () => {
-  console.log("Checking DB connectivity on startup...");
   try {
     await client.connect(MONGO_STRING + MONGO_STRING_OPTIONS);
     console.log("Successfully established database connection!");
@@ -206,17 +215,21 @@ const checkDBConnection = async () => {
   }
 };
 
-app.get("/logout", (req, res) => {
-  res.cookie("jwt", "", { maxAge: "1" })
-  res.redirect("/")
-})
 
-app.post("/register", register);
-app.post("/login", login);
+
+app.get("/api/logout", (req, res) => {
+  res.cookie("jwt", "", { maxAge: "1" });
+  res.redirect("/");
+});
+
+app.post("/api/register", register);
+app.post("/api/login", login);
 
 const server = app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
-  checkDBConnection();
+
+  // console.log("Checking DB connectivity on startup...");
+  // checkDBConnection();
 });
 
 process.on("unhandledRejection", (err) => {
