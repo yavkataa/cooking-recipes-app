@@ -5,6 +5,7 @@ import { User } from './types/User';
 import { Router } from '@angular/router';
 import { LocalStorageService } from './local-storage.service';
 import { Application } from 'express';
+import { Recipe } from './types/Recipe';
 const { SERVER_ADDRESS, PORT } = require('../../server/server-config.js');
 
 @Injectable({
@@ -43,8 +44,8 @@ export class ApiService {
     });
   }
 
-  getRecipes(): Observable<[]> {
-    return this.http.get<[]>(`${SERVER_ADDRESS}/recipes`, {
+  getRecipes(): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${SERVER_ADDRESS}/recipes`, {
       withCredentials: true,
     });
   }
