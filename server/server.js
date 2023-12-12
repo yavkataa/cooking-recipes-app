@@ -237,17 +237,18 @@ app.get("/api/recipes", auth, (req, res, next) => {
     });
 });
 
-app.get('/api/login-verify', auth, (req, res, next) => {
+app.get("/api/login-verify", auth, (req, res, next) => {
   const token = req.cookies.jwt;
   jwt.verify(token, JWT_SECRET_STRING, (err, decodedToken) => {
-    const userInfo = {username: decodedToken.username, _id: decodedToken.id};
+    const userInfo = { username: decodedToken.username, _id: decodedToken.id };
     res.status(200).json(userInfo);
-  })
-})
+  });
+});
 
 app.get("/api/logout", (req, res) => {
   res.cookie("jwt", "", { maxAge: "1" });
-  res.redirect("/");
+  res.send();
+  // res.status(204).json({ message: "Logged out successfully." });
 });
 
 app.post("/api/register", register);

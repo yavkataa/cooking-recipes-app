@@ -1,8 +1,10 @@
-import { Injectable, afterRender } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ApplicationRef, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from './types/User';
 import { Router } from '@angular/router';
+import { LocalStorageService } from './local-storage.service';
+import { Application } from 'express';
 const { SERVER_ADDRESS, PORT } = require('../../server/server-config.js');
 
 @Injectable({
@@ -12,13 +14,19 @@ export class ApiService {
   http: HttpClient;
   loggedIn: boolean;
   router: Router;
-  constructor(http: HttpClient, router: Router) {
+  localStorage: LocalStorageService;
+  ref: ApplicationRef;
+  constructor(
+    http: HttpClient,
+    router: Router,
+    localStorage: LocalStorageService,
+    ref: ApplicationRef
+  ) {
     this.http = http;
     this.router = router;
     this.loggedIn = false;
-    afterRender(() => {
-      this.loggedIn = this.checkLogin();
-    })
+    this.localStorage = localStorage;
+    this.ref = ref;
   }
 
   login(username: string, password: string): Observable<User> {
@@ -42,24 +50,21 @@ export class ApiService {
   }
 
   storeLoggedUserData(data: User): void {
-    localStorage.setItem('username', data.username);
-    localStorage.setItem('_id', data._id);
-    this.loggedIn = true;
+    this.localStorage.setItem('username', data.username);
+    this.localStorage.setItem('_id', data._id);
+    this.localStorage.setItem('loggedIn', 'true');
   }
 
   clearLoggedUserData(): void {
-    localStorage.clear();
-    this.loggedIn = false;
+    this.localStorage.clear();
   }
 
   checkLogin(): boolean {
-    let username = localStorage.getItem('username');
-    let _id = localStorage.getItem('_id');
+    let loggedIn = this.localStorage.getItem('loggedIn')
 
-    if (username && _id) {
+    if (loggedIn === "true") {
       return true;
     }
-
     return false;
   }
 
@@ -80,10 +85,18 @@ export class ApiService {
   }
 
   logout(): void {
-    let result = this.http.get(`${SERVER_ADDRESS}/logout`);
+    let result = this.http.get(`${SERVER_ADDRESS}/logout`, {
+      withCredentials: true,
+    });
     result.subscribe({
       next: () => {
+        console.log(result);
         this.clearLoggedUserData();
+        this.router.navigate(['/']);
+        this.ref.tick();
+      },
+      error: (err) => {
+        console.log(err);
       },
     });
   }

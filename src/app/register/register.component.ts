@@ -78,7 +78,7 @@ export class RegisterComponent {
       next: (result) => {
         this.api.clearLoggedUserData();
         this.api.storeLoggedUserData(result);
-        this.router.navigate(['/login-landing']);
+        this.router.navigate(['/']);
       }
     })
 

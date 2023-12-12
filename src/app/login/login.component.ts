@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ApplicationRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -60,8 +60,7 @@ export class LoginComponent {
       next: (result) => {
         this.api.clearLoggedUserData();
         this.api.storeLoggedUserData(result);
-        this.api.loggedIn = true;
-        this.router.navigate(['/login-landing']);
+        this.router.navigate(['/']);
       }
     })
 

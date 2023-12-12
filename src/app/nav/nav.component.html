@@ -2,10 +2,10 @@
   <a href="">Home</a>
   <a href="about">About</a>
   <a href="contacts">Contacts</a>
-  @if (!this.api.loggedIn) {
+  @if (this.localStorage.getItem('loggedIn') != 'true') {
   <a href="login">Login</a>
   <a href="register">Register</a>
-  } @if (this.api.loggedIn) {
-  <a href="logout">Logout</a>
+  } @if (this.localStorage.getItem('loggedIn') == 'true') {
+  <a href="" (click)="this.api.logout()">Logout</a>
   }
 </nav>
