@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export type Ingredient = {
   amount: string;
   units: string;
@@ -14,6 +16,7 @@ export type Meta = {
 };
 
 export type Recipe = {
+  _id: string;
   title: string; 
   author: string;
   description: string;
@@ -21,4 +24,5 @@ export type Recipe = {
   images: Image[];
   date: Date;
   meta: Meta;
+  instructions: string;
 };

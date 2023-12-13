@@ -16,18 +16,15 @@ export class ApiService {
   loggedIn: boolean;
   router: Router;
   localStorage: LocalStorageService;
-  ref: ApplicationRef;
   constructor(
     http: HttpClient,
     router: Router,
-    localStorage: LocalStorageService,
-    ref: ApplicationRef
+    localStorage: LocalStorageService
   ) {
     this.http = http;
     this.router = router;
     this.loggedIn = false;
     this.localStorage = localStorage;
-    this.ref = ref;
   }
 
   login(username: string, password: string): Observable<User> {
@@ -50,6 +47,12 @@ export class ApiService {
     });
   }
 
+  getOneRecipe(id: string): Observable<Recipe> {
+    return this.http.get<Recipe>(`${SERVER_ADDRESS}/recipes/${id}`, {
+      withCredentials: true,
+    });
+  }
+
   storeLoggedUserData(data: User): void {
     this.localStorage.setItem('username', data.username);
     this.localStorage.setItem('_id', data._id);
@@ -61,9 +64,9 @@ export class ApiService {
   }
 
   checkLogin(): boolean {
-    let loggedIn = this.localStorage.getItem('loggedIn')
+    let loggedIn = this.localStorage.getItem('loggedIn');
 
-    if (loggedIn === "true") {
+    if (loggedIn === 'true') {
       return true;
     }
     return false;
@@ -78,7 +81,9 @@ export class ApiService {
         return true;
       },
       error: (err) => {
-        console.log(err.status);
+        if (err.status !== 0) {
+          console.log(err);
+        }
         return false;
       },
     });
@@ -94,10 +99,11 @@ export class ApiService {
         console.log(result);
         this.clearLoggedUserData();
         this.router.navigate(['/']);
-        this.ref.tick();
       },
       error: (err) => {
-        console.log(err);
+        if (err.status !== 0) {
+          console.log(err);
+        }
       },
     });
   }

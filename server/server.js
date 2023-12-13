@@ -2,6 +2,7 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const mongoose = require("mongoose");
 const express = require("express");
 const morgan = require("morgan");
+const ObjectId = require('mongodb').ObjectId;
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
@@ -172,7 +173,7 @@ const login = async (req, res, next) => {
           httpOnly: true,
           maxAge: maxAge * 1000,
         });
-        res.set("Access-Control-Allow-Credentials", req.hostname);
+        res.set("Access-Control-Allow-Origin", req.hostname);
         res.status(201).json({
           username: findUser.username,
           _id: findUser._id,
@@ -227,13 +228,35 @@ const getRecipes = async () => {
   return recipes;
 };
 
+const getOneRecipe = async (id) => { 
+  console.log(id);
+
+  const recipe = await client
+    .db(DB_NAME)
+    .collection(RECIPE_COLLECTION)
+    .findOne({ _id: new ObjectId(id) });
+  console.log(recipe);
+  return recipe;
+};
+
 app.get("/api/recipes", auth, (req, res, next) => {
   getRecipes()
     .then((recipes) => {
-      res.status(200).send(recipes);
+      res.status(200).json(recipes);
     })
     .catch((err) => {
       res.status(400).json({ message: `Encounterted error: ${err}` });
+    });
+});
+
+app.get("/api/recipes/:id", auth, (req, res, next) => {
+  const id = req.params.id;
+  getOneRecipe(id)
+    .then((recipe) => {
+      res.status(200).json(recipe);
+    })
+    .catch((err) => {
+      res.status(400).json({ message: `Encountered error: ${err}` });
     });
 });
 

@@ -1,1 +1,42 @@
-<p>recipe works!</p>
+<div class="recipe">
+  <div class="recipe-image">
+    <div class="recipe-details-field" id="recipe-image">
+      <img src="{{ recipe.images[0].url }}" alt="" />
+    </div>
+  </div>
+
+  <div class="recipe-details">
+    <div class="recipe-details-field" id="recipe-title">
+      <h1>{{ recipe.title }}</h1>
+    </div>
+
+    <div class="recipe-details-field" id="recipe-author">
+      <p>
+        Author: <b>{{ recipe.author }}</b>
+      </p>
+    </div>
+
+    <div class="recipe-details-field" id="recipe-description">
+      {{ recipe.description }}
+    </div>
+
+    <div class="recipe-details-field" id="recipe-date">
+      Posted on: <i>{{ recipe.date.toString().split("T").at(0) }}</i>
+    </div>
+
+    <div class="recipe-details-field" id="recipe-ingredients">
+      <h3>Ingredients:</h3>
+      @for (ingredient of recipe.ingredients; track $index) {
+      <p>
+        - {{ ingredient.amount }} {{ ingredient.units }}
+        {{ ingredient.ingredient }}
+      </p>
+      }
+    </div>        
+
+    <div class="recipe-details-field" id="recipe-instructions">
+      <h3>How to prepare: </h3>
+      {{ recipe.instructions }}
+    </div>
+  </div>
+</div>

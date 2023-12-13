@@ -25,7 +25,13 @@ export class RecipesComponent implements OnInit{
         this.recipes = recipes;
       },
       error: (err) => {
-        console.log(err);
+        if (err.status !== 0) {
+          console.log(err);
+        }
+        
+        if (err.status === 401) {
+          this.api.clearLoggedUserData();
+        }
       }
     })
   }

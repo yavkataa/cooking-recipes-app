@@ -1,6 +1,19 @@
-<div class="recipe-card">
-  <div class="recipe-card-field">{{recipe.title}}</div>
-  <div class="recipe-card-field">{{recipe.author}}</div>
-  <div class="recipe-card-field">{{recipe.description}}</div>
-  <div class="recipe-card-field">{{recipe.date}}</div>
-</div>
+<a href="recipes/recipe/{{recipe._id}}">
+  <div class="recipe-card">
+    <div class="image">
+      <img src="{{ recipe.images[0].url }}" alt="" />
+    </div>
+    <div class="description">
+      <div class="recipe-card-field">
+        <h2>{{ recipe.title }}</h2>
+      </div>
+      <div class="recipe-card-field">
+        Author: <b>{{ recipe.author }}</b>
+      </div>
+      <div class="recipe-card-field">
+        Posted on: <i>{{ recipe.date.toString().split("T").at(0) }}</i>
+      </div>
+      <div class="recipe-card-field">{{ recipe.description }}</div>
+    </div>
+  </div>
+</a>

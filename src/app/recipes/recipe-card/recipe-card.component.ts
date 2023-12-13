@@ -11,6 +11,7 @@ import { Recipe } from '../../types/Recipe';
 })
 export class RecipeCardComponent {
   @Input('recipe') recipe: Recipe = {
+    _id: '',
     title: '',
     author: '',
     description: '',
@@ -21,5 +22,6 @@ export class RecipeCardComponent {
       likes: 0,
       favourites: 0,
     },
+    instructions: '',
   };
 }
