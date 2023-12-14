@@ -9,6 +9,18 @@
     required
     minLength="4"
   />
+
+  <label for="name" minlength="4">Name:</label>
+  <input
+    type="text"
+    id="name"
+    placeholder="Enter name"
+    class="input-field"
+    formControlName="name"
+    required
+    minLength="4"
+  />
+
   <div formGroupName="passwordGroup" id="password-group">
     <label for="password">Password:</label>
     <input
@@ -34,6 +46,11 @@
 this.registerForm.controls.username.invalid) {
 <div id="warning-message">
   <p>Username must be at least 4 characters long.</p>
+</div>
+} @if (this.registerForm.controls.name.touched &&
+this.registerForm.controls.name.invalid) {
+<div id="warning-message">
+  <p>Name must be at least 4 characters long.</p>
 </div>
 } @if (this.registerForm.controls.passwordGroup.controls.password.touched &&
 this.registerForm.controls.passwordGroup.controls.password.invalid) {

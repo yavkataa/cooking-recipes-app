@@ -2,7 +2,7 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const mongoose = require("mongoose");
 const express = require("express");
 const morgan = require("morgan");
-const ObjectId = require('mongodb').ObjectId;
+const ObjectId = require("mongodb").ObjectId;
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
@@ -46,13 +46,15 @@ const recipeSchema = new Schema({
   title: String, // String is shorthand for {type: String}
   author: String,
   description: String,
-  ingredients: [{ amount: String, units: String, ingredient: String }],
+  ingredients: String,
+  instructions: String,
   images: [{ url: String }],
   date: { type: Date, default: Date.now },
   meta: {
     likes: Number,
     favourites: Number,
   },
+  authorId: ObjectId,
 });
 
 const Recipe = mongoose.model("Recipe", recipeSchema);
@@ -62,6 +64,10 @@ const userSchema = new Schema({
   username: {
     type: String,
     unique: true,
+    required: true,
+  },
+  name: {
+    type: String,
     required: true,
   },
   password: {
@@ -117,7 +123,7 @@ const recipe = new Recipe({
 
 //User register authentication logic
 const register = async (req, res, next) => {
-  const { username, password } = req.body;
+  const { username, password, name } = req.body;
 
   if (password.length < 6) {
     return res.status(400).send("Password is shorter than 6 characters");
@@ -126,6 +132,7 @@ const register = async (req, res, next) => {
   bcryptjs.hash(password, 10).then(async (hash) => {
     await User.create({
       username,
+      name,
       password: hash,
     })
       .then((user) => {
@@ -143,6 +150,7 @@ const register = async (req, res, next) => {
         res.status(201).json({
           username: username,
           _id: user._id,
+          name: name,
         });
       })
       .catch((err) => {
@@ -177,6 +185,7 @@ const login = async (req, res, next) => {
         res.status(201).json({
           username: findUser.username,
           _id: findUser._id,
+          name: findUser.name,
         });
       } else {
         return res.status(400).json({ message: "Incorrect password" });
@@ -228,7 +237,7 @@ const getRecipes = async () => {
   return recipes;
 };
 
-const getOneRecipe = async (id) => { 
+const getOneRecipe = async (id) => {
   console.log(id);
 
   const recipe = await client
@@ -237,6 +246,44 @@ const getOneRecipe = async (id) => {
     .findOne({ _id: new ObjectId(id) });
   console.log(recipe);
   return recipe;
+};
+
+const postRecipe = async (req, res, next) => {
+  const {
+    title,
+    author,
+    description,
+    ingredients,
+    images,
+    instructions,
+    authorId,
+  } = req.body;
+
+  const recipe = new Recipe({
+    title: title, // String is shorthand for {type: String}
+    author: author,
+    description: description,
+    ingredients: ingredients,
+    images: images,
+    meta: {
+      likes: 0,
+      favourites: 0,
+    },
+    date: new Date(),
+    instructions: instructions,
+    authorId: new ObjectId(authorId),
+  });
+
+  recipe
+    .save()
+    .then((result) => {
+      res.status(201).json({ _id: result._id });
+    })
+    .catch((err) => {
+      res
+        .status(400)
+        .json({ message: `Could not complete post request: ${err}` });
+    });
 };
 
 app.get("/api/recipes", auth, (req, res, next) => {
@@ -274,6 +321,7 @@ app.get("/api/logout", (req, res) => {
   // res.status(204).json({ message: "Logged out successfully." });
 });
 
+app.post('/api/post-recipe', auth, postRecipe);
 app.post("/api/register", register);
 app.post("/api/login", login);
 

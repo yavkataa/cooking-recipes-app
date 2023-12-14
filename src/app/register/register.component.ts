@@ -29,6 +29,10 @@ export class RegisterComponent {
       Validators.required,
       Validators.minLength(4),
     ]),
+    name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4)
+    ]),
     passwordGroup: new FormGroup({
       password: new FormControl('', [
         Validators.required,
@@ -45,6 +49,7 @@ export class RegisterComponent {
     const registerUser = this.registerForm.controls.username.value;
     const registerPassword =
       this.registerForm.controls.passwordGroup.controls.password.value;
+    const registerName = this.registerForm.controls.name.value;
 
     if (this.registerForm.invalid) {
       return;
@@ -68,11 +73,11 @@ export class RegisterComponent {
       return;
     }
 
-    if (!registerUser || !registerPassword) {
+    if (!registerUser || !registerPassword || !registerName) {
       return;
     }
 
-    let result = this.api.register(registerUser, registerPassword);
+    let result = this.api.register(registerUser, registerPassword, registerName);
 
     result.subscribe({
       next: (result) => {

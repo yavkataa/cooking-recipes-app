@@ -34,8 +34,8 @@ export class ApiService {
     });
   }
 
-  register(username: string, password: string): Observable<User> {
-    const body = { username: username, password: password };
+  register(username: string, password: string, name: string): Observable<User> {
+    const body = { username: username, password: password, name: name };
     return this.http.post<User>(`${SERVER_ADDRESS}/register`, body, {
       withCredentials: true,
     });
@@ -53,10 +53,38 @@ export class ApiService {
     });
   }
 
+  postRecipe(
+    title: string,
+    image: {}[],
+    description: string,
+    instructions: string,
+    ingredients: string,
+    author: string,
+    authorId: string
+  ): Observable<{ _id: string }> {
+    let body = {
+      title: title,
+      images: image,
+      description: description,
+      instructions: instructions,
+      ingredients: ingredients,
+      author: author,
+      authorId: authorId,
+    };
+    return this.http.post<{ _id: string }>(
+      `${SERVER_ADDRESS}/post-recipe`,
+      body,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
   storeLoggedUserData(data: User): void {
     this.localStorage.setItem('username', data.username);
     this.localStorage.setItem('_id', data._id);
     this.localStorage.setItem('loggedIn', 'true');
+    this.localStorage.setItem('name', data.name);
   }
 
   clearLoggedUserData(): void {
