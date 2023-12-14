@@ -1,10 +1,4 @@
-import { ObjectId } from "mongodb";
 
-export type Ingredient = {
-  amount: string;
-  units: string;
-  ingredient: string;
-};
 
 export type Image = {
   url: string;
@@ -20,7 +14,7 @@ export type Recipe = {
   title: string; 
   author: string;
   description: string;
-  ingredients: Ingredient[];
+  ingredients: string;
   images: Image[];
   date: Date;
   meta: Meta;

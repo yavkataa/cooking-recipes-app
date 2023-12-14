@@ -7,6 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { RecipesComponent } from './recipes/recipes.component';
 import { NewRecipeComponent } from './recipes/new-recipe/new-recipe.component';
 import { RecipeComponent } from './recipes/recipe/recipe.component';
+import { AuthActivate } from './auth-guard.guard';
 
 export const routes: Routes = [
   {
@@ -37,13 +38,16 @@ export const routes: Routes = [
   {
     path: 'recipes',
     component: RecipesComponent,
+    canActivate: [AuthActivate],
   },
   {
     path: 'recipes/new-recipe',
     component: NewRecipeComponent,
+    canActivate: [AuthActivate],
   },
   {
     path: 'recipes/recipe/:id',
-    component: RecipeComponent
-  }
+    component: RecipeComponent,
+    canActivate: [AuthActivate],
+  },
 ];

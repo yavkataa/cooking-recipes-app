@@ -26,16 +26,13 @@
 
     <div class="recipe-details-field" id="recipe-ingredients">
       <h3>Ingredients:</h3>
-      @for (ingredient of recipe.ingredients; track $index) {
       <p>
-        - {{ ingredient.amount }} {{ ingredient.units }}
-        {{ ingredient.ingredient }}
+        {{ recipe.ingredients }}
       </p>
-      }
-    </div>        
+    </div>
 
     <div class="recipe-details-field" id="recipe-instructions">
-      <h3>How to prepare: </h3>
+      <h3>How to prepare:</h3>
       {{ recipe.instructions }}
     </div>
   </div>

@@ -24,7 +24,7 @@ export class RecipeComponent implements OnInit {
     title: '',
     author: '',
     description: '',
-    ingredients: [],
+    ingredients: '',
     images: [{url: ''}],
     date: new Date(),
     meta: {

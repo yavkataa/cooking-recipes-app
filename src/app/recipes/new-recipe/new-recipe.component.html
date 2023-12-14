@@ -1,1 +1,42 @@
-<p>new-recipe works!</p>
+<form action="home" (submit)="submitForm()">
+  <label for="recipe-title">Title: </label>
+  <div class="input-field">
+    <input type="text" id="recipe-title" name="recipe-title" />
+  </div>
+
+  <label for="image" class="">Picture (URL):</label>
+  <div class="recipe-image">
+    <input type="text" name="image" />
+  </div>
+
+
+  <label for="recipe-description">Description: </label>
+  <div class="input-field">
+    <textarea
+      name="recipe-description"
+      id="recipe-description"
+      cols="30"
+      rows="10"
+    ></textarea>
+  </div>
+
+  <label for="recipe-instructions">Instructions: </label>
+  <div class="input-field">
+    <textarea
+      name="recipe-instructions"
+      id="recipe-instructions"
+      cols="30"
+      rows="10"
+    ></textarea>
+  </div>
+
+  <label for="recipe-ingredients">Ingredients: </label>
+
+  <div class="ingredients input-field">
+    <textarea name="ingredients" id="" cols="30" rows="10"></textarea>
+  </div>
+
+  <div class="submit-controls">
+    <button>Post recipe</button>
+  </div>
+</form>

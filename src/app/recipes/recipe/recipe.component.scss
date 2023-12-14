@@ -2,19 +2,45 @@
   max-width: 20vw;
   max-height: 80vh;
   border-radius: 15px;
+  min-width: 100px;
+  min-height: 200px;
 }
 
 .recipe {
   display: flex;
   flex-direction: row;
   white-space: pre-wrap;
-  max-width: 100%;  
+  max-width: 100%;
   background-color: #dabc93;
   padding: 15px;
   margin: 15px;
   border-radius: 15px;
+  animation: 1s ease-in-out 0s 1 fadeIn;
 }
 
 .recipe-details-field {
   padding: 10px;
+  overflow: hidden;
+}
+
+@media only screen and (max-width: 600px) {
+  .recipe,
+  .recipe-image,
+  .recipe-details {
+    display: block;
+    font-size: 28px;
+  }
+
+  .recipe-image img {
+    max-width: 80vw;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
 }

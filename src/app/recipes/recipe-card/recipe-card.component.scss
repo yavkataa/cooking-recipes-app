@@ -11,6 +11,7 @@
   overflow: hidden;
   max-height: 200px;
   padding: 10px;
+  animation: 1s ease-in-out 0s 1 fadeIn;
 }
 
 .recipe-card:hover {
@@ -45,4 +46,14 @@
 
 a {
   text-decoration: none;
+}
+
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
 }

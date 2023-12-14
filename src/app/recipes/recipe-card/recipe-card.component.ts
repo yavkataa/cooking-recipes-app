@@ -15,8 +15,8 @@ export class RecipeCardComponent {
     title: '',
     author: '',
     description: '',
-    ingredients: [],
-    images: [],
+    ingredients: '',
+    images: [{url: ''}],
     date: new Date(),
     meta: {
       likes: 0,

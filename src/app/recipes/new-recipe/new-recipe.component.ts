@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './new-recipe.component.html',
   styleUrl: './new-recipe.component.scss'
 })
-export class NewRecipeComponent {
+export class NewRecipeComponent { 
+  submitForm(): void {
 
+  }
 }
