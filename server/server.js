@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, Db } = require("mongodb");
 const mongoose = require("mongoose");
 const express = require("express");
 const morgan = require("morgan");
@@ -233,18 +233,14 @@ const getRecipes = async () => {
     .collection(RECIPE_COLLECTION)
     .find()
     .toArray();
-  console.log(recipes);
   return recipes;
 };
 
 const getOneRecipe = async (id) => {
-  console.log(id);
-
   const recipe = await client
     .db(DB_NAME)
     .collection(RECIPE_COLLECTION)
     .findOne({ _id: new ObjectId(id) });
-  console.log(recipe);
   return recipe;
 };
 
@@ -286,6 +282,34 @@ const postRecipe = async (req, res, next) => {
     });
 };
 
+const updateRecipe = async (id, updateParams) => {
+  let result = await client
+    .db(DB_NAME)
+    .collection(RECIPE_COLLECTION)
+    .updateOne({ _id: new ObjectId(id) }, {$set: updateParams});
+  return result;
+};
+
+const deleteRecipe = async (id) => {
+  const deletionOutcome = await client
+    .db(DB_NAME)
+    .collection(RECIPE_COLLECTION)
+    .deleteOne({ _id: new ObjectId(id) });
+  return deletionOutcome;
+};
+
+app.put("/api/recipes/recipe/:id", auth, (req, res, next) => {
+  const updateParams = req.body;
+  const {id} = req.params;
+  updateRecipe(id, updateParams)
+    .then((result) => {
+      res.status(201).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
+});
+
 app.get("/api/recipes", auth, (req, res, next) => {
   getRecipes()
     .then((recipes) => {
@@ -307,6 +331,17 @@ app.get("/api/recipes/:id", auth, (req, res, next) => {
     });
 });
 
+app.delete("/api/recipes/delete/:id/", auth, (req, res, next) => {
+  const { id } = req.params;
+  deleteRecipe(id)
+    .then((result) => {
+      res.status(204).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json({ message: `Encountered error: ${err}` });
+    });
+});
+
 app.get("/api/login-verify", auth, (req, res, next) => {
   const token = req.cookies.jwt;
   jwt.verify(token, JWT_SECRET_STRING, (err, decodedToken) => {
@@ -321,7 +356,7 @@ app.get("/api/logout", (req, res) => {
   // res.status(204).json({ message: "Logged out successfully." });
 });
 
-app.post('/api/post-recipe', auth, postRecipe);
+app.post("/api/post-recipe", auth, postRecipe);
 app.post("/api/register", register);
 app.post("/api/login", login);
 

@@ -4,7 +4,7 @@
   max-width: 25vw;
   min-width: 350px;
   display: flex;
-  flex-direction: row;  
+  flex-direction: row;
   color: white;
   text-shadow: 2px 2px 3px black;
   border-radius: 15px;
@@ -20,21 +20,25 @@
   background-color: #b5895a;
 }
 
-.recipe-card img {
-  max-height: 200px;
-  border-radius: 15px;
-  height: 100%;
-}
+
 
 .image {
   width: fit-content;
-  max-width: 300px;
+  max-width: 200px;
   display: inline-block;
+  img {
+    max-height: 200px;
+    max-width: 200px;
+    border-radius: 15px;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .description {
   display: inline-block;
   padding: 10px;
+  overflow: hidden;
 }
 
 .recipe-card-field {
@@ -47,7 +51,6 @@
 a {
   text-decoration: none;
 }
-
 
 @keyframes fadeIn {
   0% {

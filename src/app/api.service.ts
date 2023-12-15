@@ -118,6 +118,18 @@ export class ApiService {
     return false;
   }
 
+  deleteRecipe(id: string): Observable<{}> {
+    return this.http.delete(`${SERVER_ADDRESS}/recipes/delete/${id}`, {
+      withCredentials: true,
+    });
+  }
+
+  updateRecipe(id: string, payload: {}): Observable<{}> {
+    return this.http.put(`${SERVER_ADDRESS}/recipes/recipe/${id}`, payload, {
+      withCredentials: true,
+    });
+  }
+
   logout(): void {
     let result = this.http.get(`${SERVER_ADDRESS}/logout`, {
       withCredentials: true,

@@ -1,3 +1,26 @@
+@if (!this.loading){ 
+  @if (!this.editing) { 
+    @if (recipe.authorId ==
+    this.localStorage.getItem('_id')) {
+    <div class="controls">
+      <button type="button" (click)="(this.editing = true) && loadRecipeDetails()">Edit recipe</button>
+      @if (!this.deletePrompt) {
+      <button type="button" (click)="this.deletePrompt = true">
+        Delete recipe?
+      </button>
+      } @if (this.deletePrompt) {
+      <button type="button" class="delete-button" (click)="deleteRecipe()">Yes, delete!</button>
+      <button
+        type="button"
+        class="cancel-button"
+        (click)="this.deletePrompt = false"
+      >
+        No, cancel
+      </button>
+    }
+  </div>
+}
+
 <div class="recipe">
   <div class="recipe-image">
     <div class="recipe-details-field" id="recipe-image">
@@ -37,3 +60,61 @@
     </div>
   </div>
 </div>
+} 
+@if (this.editing) {
+<div class="edit-recipe">
+  <div class="controls">
+    <button type="button" (click)="this.editing = false">Cancel</button>
+  </div>
+  <form action="" [formGroup]="editRecipeForm">
+    <label for="recipe-title">Title: </label>
+    <div class="input-field">
+      <input type="text" id="recipe-title" name="recipe-title" formControlName="title"/>
+    </div>
+  
+    <label for="image" class="">Picture (URL):</label>
+    <div class="recipe-image">
+      <input type="text" name="image" formControlName="image" />
+    </div>
+  
+    <label for="recipe-description">Description: </label>
+    <div class="input-field">
+      <textarea
+        name="recipe-description"
+        id="recipe-description"
+        cols="30"
+        rows="10"
+        formControlName="description"
+      ></textarea>
+    </div>
+  
+    <label for="recipe-instructions">Instructions: </label>
+    <div class="input-field">
+      <textarea
+        name="recipe-instructions"
+        id="recipe-instructions"
+        cols="30"
+        rows="10"
+        formControlName="instructions"
+      ></textarea>
+    </div>
+  
+    <label for="recipe-ingredients">Ingredients: </label>
+  
+    <div class="ingredients input-field">
+      <textarea
+        name="ingredients"
+        id=""
+        cols="30"
+        rows="10"
+        formControlName="ingredients"
+      ></textarea>
+    </div>
+  
+    <div class="submit-controls">
+      <button type="button" (click)="submitChanges()">Save changes</button>
+    </div>
+  </form>
+</div>
+}
+}

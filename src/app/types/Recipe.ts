@@ -1,5 +1,3 @@
-
-
 export type Image = {
   url: string;
 };
@@ -19,4 +17,5 @@ export type Recipe = {
   date: Date;
   meta: Meta;
   instructions: string;
+  authorId: string;
 };

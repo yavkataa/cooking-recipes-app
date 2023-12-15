@@ -16,12 +16,13 @@ export class RecipeCardComponent {
     author: '',
     description: '',
     ingredients: '',
-    images: [{url: ''}],
+    images: [{ url: '' }],
     date: new Date(),
     meta: {
       likes: 0,
       favourites: 0,
     },
     instructions: '',
+    authorId: '',
   };
 }
