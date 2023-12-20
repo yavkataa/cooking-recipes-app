@@ -32,6 +32,10 @@
     <div class="recipe-details-field" id="recipe-title">
       <h1>{{ recipe.title }}</h1>
     </div>
+    
+    <div class="recipe-details-field" id="recipe-date">
+      Posted on: <i>{{ recipe.date.toString().split("T").at(0) }}</i>
+    </div>
 
     <div class="recipe-details-field" id="recipe-author">
       <p>
@@ -43,9 +47,6 @@
       {{ recipe.description }}
     </div>
 
-    <div class="recipe-details-field" id="recipe-date">
-      Posted on: <i>{{ recipe.date.toString().split("T").at(0) }}</i>
-    </div>
 
     <div class="recipe-details-field" id="recipe-ingredients">
       <h3>Ingredients:</h3>

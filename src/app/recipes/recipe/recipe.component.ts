@@ -87,7 +87,6 @@ export class RecipeComponent implements OnInit {
     const id = this.activatedRoute.snapshot.params['id'];
     this.api.deleteRecipe(id).subscribe({
       next: (result) => {
-        console.log(result);
         this.router.navigate(['recipes']);
       },
       error: (err) => {
@@ -142,7 +141,7 @@ export class RecipeComponent implements OnInit {
           this.fetchRecipe();
         }, 
         error: (err) => {
-          console.log(err);
+          console.log(err.error.message);
           if (err.status == 401) {
             this.api.clearLoggedUserData();
             this.router.navigate(['/']);
