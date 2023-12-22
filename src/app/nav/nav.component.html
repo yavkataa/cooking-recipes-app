@@ -1,14 +1,27 @@
 <nav>
-  <a href="">Home</a>
-  <a href="about">About</a>
-  <a href="contacts">Contacts</a>
 
-  @if (this.localStorage.getItem('loggedIn') != 'true') {
-  <a href="login">Login</a>
-  <a href="register">Register</a>
-  } @if (this.localStorage.getItem('loggedIn') == 'true') {
-  <a href="recipes">Recipes</a>
-  <a href="recipes/new-recipe">Post new recipe</a>
-  <a href="" (click)="this.api.logout()">Logout</a>
-  }
+  <div class="nav-element title">
+    CooksCooks
+  </div>
+
+  <div class="nav-element buttons"><a href="">Home</a>
+    <a href="about">About</a>
+    <a href="contacts">Contacts</a>
+    <a href="recipes">Recipes</a>
+
+    @if (this.localStorage.getItem('loggedIn') != 'true') {
+    <a href="login">Login</a>
+    <a href="register">Register</a>
+    } @if (this.localStorage.getItem('loggedIn') == 'true') {
+    <a href="recipes/new-recipe">Post new recipe</a>
+    <a href="" (click)="this.api.logout()">Logout</a>
+    }
+  </div>
+
+  <div class="nav-element user">
+    @if (this.localStorage.getItem('name')) {
+    Logged in as: {{this.localStorage.getItem('name')}}
+    }
+  </div>
+
 </nav>

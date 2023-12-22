@@ -3,11 +3,14 @@ nav {
   height: fit-content;
   display: inline-block;
   width: 100%;
-  
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
   a {
-    background-color: rgb(150, 150, 130);
-    margin: 5px 0;    
     border-radius: 15px;
+    background-color: rgb(150, 150, 130);
+    margin: 5px 0;
     padding: 10px;
     display: inline-block;
     text-decoration: none;
@@ -17,5 +20,27 @@ nav {
       background-color: rgb(165, 165, 140);
       transition: background-color 0.2s;
     }
+  }
+
+  .nav-element {
+    min-width: 28vw;
+  }
+
+  .title {
+    font-size: 32px;
+    padding: 5px;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .user {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
   }
 }

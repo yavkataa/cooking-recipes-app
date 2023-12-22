@@ -2,7 +2,8 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
+  margin-top: 20px;  
+  animation: 1s ease-in-out 0s 1 fadeIn;
 }
 
 .input-field {
@@ -35,3 +36,11 @@ button {
   border-radius: 15px;
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}

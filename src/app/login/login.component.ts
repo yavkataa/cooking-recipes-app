@@ -9,13 +9,12 @@ import {
 import { Router } from '@angular/router';
 import { ApiService } from '../api.service';
 import { HttpClientModule } from '@angular/common/http';
-import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
-  providers: [ApiService, CookieService],
+  providers: [ApiService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
@@ -60,7 +59,7 @@ export class LoginComponent {
       next: (result) => {
         this.api.clearLoggedUserData();
         this.api.storeLoggedUserData(result);
-        this.router.navigate(['/']);
+        this.router.navigate(['recipes', {dummy: new Date()}]);
       }
     })
 
