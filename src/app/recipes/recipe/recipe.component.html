@@ -88,6 +88,18 @@
         formControlName="description"
       ></textarea>
     </div>
+
+    <label for="recipe-ingredients">Ingredients: </label>
+  
+    <div class="ingredients input-field">
+      <textarea
+        name="ingredients"
+        id=""
+        cols="30"
+        rows="10"
+        formControlName="ingredients"
+      ></textarea>
+    </div>
   
     <label for="recipe-instructions">Instructions: </label>
     <div class="input-field">
@@ -100,17 +112,7 @@
       ></textarea>
     </div>
   
-    <label for="recipe-ingredients">Ingredients: </label>
-  
-    <div class="ingredients input-field">
-      <textarea
-        name="ingredients"
-        id=""
-        cols="30"
-        rows="10"
-        formControlName="ingredients"
-      ></textarea>
-    </div>
+    
   
     <div class="submit-controls">
       <button type="button" (click)="submitChanges()">Save changes</button>

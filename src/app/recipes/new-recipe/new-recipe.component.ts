@@ -21,7 +21,11 @@ export class NewRecipeComponent {
   localStorage: LocalStorageService;
   api: ApiService;
   router: Router;
-  constructor(api: ApiService, localStorage: LocalStorageService, router: Router) {
+  constructor(
+    api: ApiService,
+    localStorage: LocalStorageService,
+    router: Router
+  ) {
     this.localStorage = localStorage;
     this.api = api;
     this.router = router;
@@ -38,7 +42,7 @@ export class NewRecipeComponent {
   submitForm(): void {
     const recipeFormControls = this.newRecipeForm.controls;
     const recipeTitle = recipeFormControls.title.value;
-    const recipeImage = recipeFormControls.image.value
+    const recipeImage = recipeFormControls.image.value;
     const recipeDescription = recipeFormControls.description.value;
     const recipeInstructions = recipeFormControls.instructions.value;
     const recipeIngredients = recipeFormControls.ingredients.value;
@@ -61,21 +65,27 @@ export class NewRecipeComponent {
       return;
     }
 
-    this.api.postRecipe(
-      recipeTitle,
-      [{url: recipeImage}],
-      recipeDescription,
-      recipeInstructions,
-      recipeIngredients,
-      recipeAuthor,
-      recipeAuthorId
-    ).subscribe({
-      next: (result) => {
-        this.router.navigate([`recipes/recipe/${result._id}`])
-      }, 
-      error: (err) => {
-        console.log(err);
-      }
-    })
+    this.api
+      .postRecipe(
+        recipeTitle,
+        [{ url: recipeImage }],
+        recipeDescription,
+        recipeInstructions,
+        recipeIngredients,
+        recipeAuthor,
+        recipeAuthorId
+      )
+      .subscribe({
+        next: (result) => {
+          this.router.navigate([`recipes/recipe/${result._id}`]);
+        },
+        error: (err) => {
+          if ((err.status = 401)) {
+            this.api.clearLoggedUserData();
+            this.router.navigate(['/']);
+          }
+          console.log(err);
+        },
+      });
   }
 }

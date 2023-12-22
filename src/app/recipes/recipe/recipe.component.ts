@@ -125,13 +125,13 @@ export class RecipeComponent implements OnInit {
       const image = controls.image.value;
       const description = controls.description.value;
       const instructions = controls.instructions.value;
-      const ingredients = controls.instructions.value;
+      const ingredients = controls.ingredients.value;
       const updateParams = {
         title: title,
         images: [{url:image}],
         description: description,
-        instructions: instructions,
         ingredients: ingredients,
+        instructions: instructions,        
       };
 
       this.api.updateRecipe(id, updateParams).subscribe({

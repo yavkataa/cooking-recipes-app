@@ -1,10 +1,21 @@
 <div class="wrapper">
     <div class="home-card">
+        @if (!this.localStorage.getItem('username')) {
         <p class="home-content">Hello and welcome to CooksCooks! The best website for sharing cooking recipes yet!</p>
 
-        <p>Here you can <a href="recipes">browse delicious recipes</a> posted by our users or <a
+        <p>Here you can <a href="recipes">browse delicious recipes</a> posted by our users, <a
                 href="register">register</a> for an account, or <a href="login">login</a> and post your own recipes.</p>
 
         <p>We hope you enjoy your stay!</p>
+        }
+
+        @if (this.localStorage.getItem('username')) {
+        <p class="home-content">Hello {{this.localStorage.getItem('name')}} and welcome to CooksCooks! The best website for sharing cooking recipes yet!</p>
+
+        <p>Here you can <a href="recipes">browse delicious recipes</a> posted by our users.
+
+        <p>We hope you enjoy your stay!</p>
+        }
+
     </div>
 </div>
