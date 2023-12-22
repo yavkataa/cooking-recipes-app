@@ -8,6 +8,7 @@ import { RecipesComponent } from './recipes/recipes.component';
 import { NewRecipeComponent } from './recipes/new-recipe/new-recipe.component';
 import { RecipeComponent } from './recipes/recipe/recipe.component';
 import { AuthActivate } from './auth-guard.guard';
+import { AuthActivateInverse } from './auth-guard-inverted.guard';
 
 export const routes: Routes = [
   {
@@ -30,15 +31,16 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [AuthActivateInverse]
   },
   {
     path: 'register',
     component: RegisterComponent,
+    canActivate: [AuthActivateInverse]
   },
   {
     path: 'recipes',
     component: RecipesComponent,
-    canActivate: [AuthActivate],
   },
   {
     path: 'recipes/new-recipe',
@@ -48,6 +50,5 @@ export const routes: Routes = [
   {
     path: 'recipes/recipe/:id',
     component: RecipeComponent,
-    canActivate: [AuthActivate],
   },
 ];

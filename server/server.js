@@ -310,7 +310,7 @@ app.put("/api/recipes/recipe/:id", auth, (req, res, next) => {
     });
 });
 
-app.get("/api/recipes", auth, (req, res, next) => {
+app.get("/api/recipes", (req, res, next) => {
   getRecipes()
     .then((recipes) => {
       res.status(200).json(recipes);
@@ -320,7 +320,7 @@ app.get("/api/recipes", auth, (req, res, next) => {
     });
 });
 
-app.get("/api/recipes/:id", auth, (req, res, next) => {
+app.get("/api/recipes/:id", (req, res, next) => {
   const id = req.params.id;
   getOneRecipe(id)
     .then((recipe) => {
