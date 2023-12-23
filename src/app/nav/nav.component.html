@@ -20,7 +20,7 @@
 
   <div class="nav-element user">
     @if (this.localStorage.getItem('name')) {
-    Logged in as: {{this.localStorage.getItem('name')}}
+    Logged in as: <a href="user/profile">{{this.localStorage.getItem('name')}}</a>
     }
   </div>
 

@@ -1,0 +1,34 @@
+<div class="wrapper">
+    <div class="profile-card">
+        @if (!this.specificUser) {
+            <section>
+                <h2>Name</h2>
+                <p>{{this.localStorage.getItem('name')}}</p>
+            </section>
+            <section>
+                <h2>Username</h2>
+                <p>{{this.localStorage.getItem('username')}}</p>
+            </section>
+            <section>
+                <h2>ID</h2>
+                <p>{{this.localStorage.getItem('_id')}}</p>
+            </section>
+        }
+
+        @if (this.specificUser) {
+            <section>
+                <h2>Name</h2>
+                <p>{{this.user.name}}</p>
+            </section>
+            <section>
+                <h2>Username</h2>
+                <p>{{this.user.username}}</p>
+            </section>
+            <section>
+                <h2>ID</h2>
+                <p>{{this.user._id}}</p>
+            </section>
+        }
+        
+    </div>
+</div>

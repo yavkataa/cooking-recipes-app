@@ -286,7 +286,7 @@ const updateRecipe = async (id, updateParams) => {
   let result = await client
     .db(DB_NAME)
     .collection(RECIPE_COLLECTION)
-    .updateOne({ _id: new ObjectId(id) }, {$set: updateParams});
+    .updateOne({ _id: new ObjectId(id) }, { $set: updateParams });
   return result;
 };
 
@@ -298,12 +298,25 @@ const deleteRecipe = async (id) => {
   return deletionOutcome;
 };
 
+const getUser = async (id) => {
+  const user = client
+    .db(DB_NAME)
+    .collection("users")
+    .findOne({ _id: new ObjectId(id) });
+  return user;
+};
+
 app.put("/api/recipes/recipe/:id", auth, (req, res, next) => {
   const updateParams = req.body;
-  const {id} = req.params;
+  const { id } = req.params;
   updateRecipe(id, updateParams)
     .then((result) => {
-      res.status(201).json(result);
+      const userDetails = {
+        username: result.username,
+        name: result.name,
+        _id: result._id,
+      }
+      res.status(201).json(userDetails);
     })
     .catch((err) => {
       res.status(400).json(err);
@@ -354,6 +367,17 @@ app.get("/api/logout", (req, res) => {
   res.cookie("jwt", "", { maxAge: "1" });
   res.send();
   // res.status(204).json({ message: "Logged out successfully." });
+});
+
+app.get("/api/user/:id", (req, res, next) => {
+  const { id } = req.params;
+  getUser(id)
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
+    });
 });
 
 app.post("/api/post-recipe", auth, postRecipe);

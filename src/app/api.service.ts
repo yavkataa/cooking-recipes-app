@@ -53,6 +53,10 @@ export class ApiService {
     });
   }
 
+  getUserDetails(id: string): Observable<User> {
+    return this.http.get<User>(`${SERVER_ADDRESS}/user/${id}`);
+  }
+
   postRecipe(
     title: string,
     image: {}[],

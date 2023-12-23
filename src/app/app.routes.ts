@@ -9,6 +9,7 @@ import { NewRecipeComponent } from './recipes/new-recipe/new-recipe.component';
 import { RecipeComponent } from './recipes/recipe/recipe.component';
 import { AuthActivate } from './auth-guard.guard';
 import { AuthActivateInverse } from './auth-guard-inverted.guard';
+import { ProfileComponent } from './user/profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -51,4 +52,14 @@ export const routes: Routes = [
     path: 'recipes/recipe/:id',
     component: RecipeComponent,
   },
+  {
+    path: 'user/profile',
+    component: ProfileComponent,
+    canActivate: [AuthActivate]
+  },
+  {
+    path: 'user/profile/:id',
+    component: ProfileComponent,
+  }
+
 ];

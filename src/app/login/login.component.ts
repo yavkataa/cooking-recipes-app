@@ -53,15 +53,15 @@ export class LoginComponent {
       return;
     }
 
-    let result = this.api.login(loginUser, loginPassword);     
+    let result = this.api.login(loginUser, loginPassword);
 
     result.subscribe({
       next: (result) => {
         this.api.clearLoggedUserData();
         this.api.storeLoggedUserData(result);
-        this.router.navigate(['recipes', {dummy: new Date()}]);
-      }
-    })
+        this.router.navigate(['recipes']);
+      },
+    });
 
     // this.router.navigate(['home']);
   }
