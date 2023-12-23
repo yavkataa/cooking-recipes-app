@@ -1,6 +1,9 @@
 <div class="wrapper">
     <div class="profile-card">
         @if (!this.specificUser) {
+            <div class="controls">
+                <button type="button" (click)="viewUserRecipes()">View recipes posted by this user</button>
+            </div>
             <section>
                 <h2>Name</h2>
                 <p>{{this.localStorage.getItem('name')}}</p>
@@ -16,6 +19,9 @@
         }
 
         @if (this.specificUser) {
+            <div class="controls">
+                <button type="button" (click)="viewUserRecipes()" >View recipes posted by this user</button>
+            </div>
             <section>
                 <h2>Name</h2>
                 <p>{{this.user.name}}</p>

@@ -32,12 +32,12 @@ export const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [AuthActivateInverse]
+    canActivate: [AuthActivateInverse],
   },
   {
     path: 'register',
     component: RegisterComponent,
-    canActivate: [AuthActivateInverse]
+    canActivate: [AuthActivateInverse],
   },
   {
     path: 'recipes',
@@ -53,13 +53,16 @@ export const routes: Routes = [
     component: RecipeComponent,
   },
   {
+    path: 'recipes/user/:id',
+    component: RecipesComponent,
+  },
+  {
     path: 'user/profile',
     component: ProfileComponent,
-    canActivate: [AuthActivate]
+    canActivate: [AuthActivate],
   },
   {
     path: 'user/profile/:id',
     component: ProfileComponent,
-  }
-
+  },
 ];

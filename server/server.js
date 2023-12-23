@@ -244,6 +244,15 @@ const getOneRecipe = async (id) => {
   return recipe;
 };
 
+const getUserRecipes = async (id) => {
+  const userRecipes = await client
+    .db(DB_NAME)
+    .collection(RECIPE_COLLECTION)
+    .find({ authorId: new ObjectId(id) })
+    .toArray();
+  return userRecipes;
+};
+
 const postRecipe = async (req, res, next) => {
   const {
     title,
@@ -315,7 +324,7 @@ app.put("/api/recipes/recipe/:id", auth, (req, res, next) => {
         username: result.username,
         name: result.name,
         _id: result._id,
-      }
+      };
       res.status(201).json(userDetails);
     })
     .catch((err) => {
@@ -330,6 +339,17 @@ app.get("/api/recipes", (req, res, next) => {
     })
     .catch((err) => {
       res.status(400).json({ message: `Encounterted error: ${err}` });
+    });
+});
+
+app.get("/api/recipes/user/:id", (req, res, next) => {
+  const { id } = req.params;
+  getUserRecipes(id)
+    .then((recipes) => {
+      res.status(200).json(recipes);
+    })
+    .catch((err) => {
+      res.status(400).json(err);
     });
 });
 

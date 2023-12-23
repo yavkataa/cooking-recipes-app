@@ -19,7 +19,12 @@ export class ProfileComponent implements OnInit {
   router: Router;
   activatedRoute: ActivatedRoute;
   specificUser: boolean;
-  constructor(api: ApiService, localStorage: LocalStorageService, router: Router, activatedRoute: ActivatedRoute) {
+  constructor(
+    api: ApiService,
+    localStorage: LocalStorageService,
+    router: Router,
+    activatedRoute: ActivatedRoute
+  ) {
     this.api = api;
     this.localStorage = localStorage;
     this.router = router;
@@ -39,13 +44,22 @@ export class ProfileComponent implements OnInit {
       this.api.getUserDetails(userId).subscribe({
         next: (user) => {
           this.user = user;
-        }, 
+        },
         error: (err) => {
-          if (err.status = 400) {
+          if ((err.status = 400)) {
             console.log(err);
           }
-        }
-      })
+        },
+      });
+    }
+  }
+
+  viewUserRecipes(): void {
+    const userId = this.user._id;
+    if (userId) {
+      this.router.navigate([`recipes/user/${userId}`]);
+    } else {
+      this.router.navigate([`recipes/user/${this.localStorage.getItem('_id')}`]);
     }
   }
 }

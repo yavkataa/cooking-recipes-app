@@ -53,6 +53,10 @@ export class ApiService {
     });
   }
 
+  getUserRecipes(id: string) : Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${SERVER_ADDRESS}/recipes/user/${id}`);
+  }
+
   getUserDetails(id: string): Observable<User> {
     return this.http.get<User>(`${SERVER_ADDRESS}/user/${id}`);
   }
