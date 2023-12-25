@@ -12,7 +12,7 @@
         @if (this.localStorage.getItem('username')) {
         <p class="home-content">Hello {{this.localStorage.getItem('name')}} and welcome to CooksCooks! The best website for sharing cooking recipes yet!</p>
 
-        <p>Here you can <a href="recipes">browse delicious recipes</a> posted by our users.
+        <p>Here you can <a href="recipes">browse delicious recipes</a> posted by our users, <a href="recipes/new-recipe">post a new recipe</a> or <a href="recipes/user/{{this.localStorage.getItem('_id')}}">view recipes posted by you</a>.
 
         <p>We hope you enjoy your stay!</p>
         }

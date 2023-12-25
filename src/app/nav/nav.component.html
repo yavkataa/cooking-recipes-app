@@ -13,6 +13,7 @@
     <a href="login">Login</a>
     <a href="register">Register</a>
     } @if (this.localStorage.getItem('loggedIn') == 'true') {
+    <a href="recipes/user/{{this.localStorage.getItem('_id')}}">My Recipes</a>
     <a href="recipes/new-recipe">Post new recipe</a>
     <a href="" (click)="this.api.logout()">Logout</a>
     }
