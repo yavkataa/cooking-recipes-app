@@ -84,7 +84,9 @@ export class NewRecipeComponent {
             this.api.clearLoggedUserData();
             this.router.navigate(['/']);
           }
-          console.log(err);
+          if (err.status != 0) {
+            console.log(err);
+          }
         },
       });
   }

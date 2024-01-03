@@ -26,6 +26,13 @@ nav {
     min-width: 28vw;
   }
 
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+
   .title {
     font-size: 32px;
     padding: 5px;
