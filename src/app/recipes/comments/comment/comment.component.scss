@@ -1,0 +1,55 @@
+.comment {
+  display: flex;
+  flex-direction: column;
+  white-space: pre-wrap;
+  max-width: 100%;
+  background-color: #dabc93;
+  padding: 15px;
+  margin: 15px;
+  border-radius: 15px;
+  animation: 1s ease-in-out 0s 1 fadeIn;
+}
+
+button {
+  display: inline-block;
+  max-width: 150px;
+  padding: 10px;
+  border-radius: 15px;
+  margin-top: 10px;
+  transition-duration: 0.2s;
+  transition-property: background-color;
+  &:hover {
+    background-color: lightgray;
+    cursor: pointer;
+  }
+}
+
+.delete-button {
+  background-color: #bf0e0e;
+  color: white;
+  &:hover {
+    background-color: #f01515 !important; 
+    transition-property: background-color;
+    transition-duration: 0.2s;
+  } 
+}
+
+.cancel-button {
+  background-color: #118a15;
+  color: white;
+  &:hover {
+    background-color: #59b35c !important;
+    transition-property: background-color;
+    transition-duration: 0.2s;
+  } 
+}
+
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}

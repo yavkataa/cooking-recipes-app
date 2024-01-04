@@ -1,3 +1,7 @@
+<div class="comments">
 @for (comment of comments; track $index) {
-  <app-comment [comment]="comment"></app-comment>
+  <app-comment [comment]="comment" class="comment"></app-comment>
 }
+</div>
+
+<app-comment-form></app-comment-form>

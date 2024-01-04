@@ -104,6 +104,18 @@ export class ApiService {
     return this.http.get<Comment[]>(`${SERVER_ADDRESS}/comments/${id}`);
   }
 
+  postComment(comment: {}): Observable<{}> {
+    return this.http.post(`${SERVER_ADDRESS}/post-comment`, comment, {
+      withCredentials: true,
+    });
+  }
+
+  deleteComment(id: string): Observable<{}> {
+    return this.http.delete(`${SERVER_ADDRESS}/comments/${id}`, {
+      withCredentials: true,
+    });
+  }
+
   storeLoggedUserData(data: User): void {
     this.localStorage.setItem('username', data.username);
     this.localStorage.setItem('_id', data._id);

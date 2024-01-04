@@ -4,11 +4,12 @@ import { ApiService } from '../../api.service';
 import { LocalStorageService } from '../../local-storage.service';
 import { CommentComponent } from './comment/comment.component';
 import { Comment } from '../../types/Comment';
+import { CommentFormComponent } from './comment-form/comment-form.component';
 
 @Component({
   selector: 'app-comments',
   standalone: true,
-  imports: [CommonModule, CommentComponent],
+  imports: [CommonModule, CommentComponent, CommentFormComponent],
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.scss',
 })

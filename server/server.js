@@ -474,6 +474,26 @@ app.get("/api/comments/:id", (req, res, next) => {
     });
 });
 
+const deleteComment = async (id) => {
+  const deletionOutcome = await client
+    .db(DB_NAME)
+    .collection(COMMENT_COLLECTION)
+    .deleteOne({ _id: new ObjectId(id) });
+  return deletionOutcome;
+};
+
+app.delete("/api/comments/:id", auth, (req, res, next) => {
+  const { id } = req.params;
+
+  deleteComment(id)
+    .then((result) => {
+      res.status(204).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json({ message: `Encountered error: ${err}` });
+    });
+});
+
 const postComment = async (req, res, next) => {
   const { recipeId, authorId, authorName, comment } = req.body;
 
@@ -486,7 +506,7 @@ const postComment = async (req, res, next) => {
 
   commentPayload
     .save()
-    .then(() => {
+    .then((result) => {
       res.status(201).json({ _id: result._id });
     })
     .catch((err) => {

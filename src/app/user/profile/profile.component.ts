@@ -46,9 +46,9 @@ export class ProfileComponent implements OnInit {
           this.user = user;
         },
         error: (err) => {
-          if ((err.status = 400)) {
-            console.log(err);
-          }
+          // if ((err.status = 400)) {
+          //   console.log(err);
+          // }
         },
       });
     }
