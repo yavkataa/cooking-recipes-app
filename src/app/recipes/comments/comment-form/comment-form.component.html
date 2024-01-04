@@ -1,0 +1,13 @@
+<form onsubmit="submitComment()" [formGroup]="CommentForm">
+  <label for="comment">Post your comment:</label>
+  <textarea
+    name="comment"
+    id="comment"
+    cols="30"
+    rows="10"
+    required
+    formControlName="comment"
+  ></textarea>
+
+  <button type="button" (click)="submitComment()">Submit comment</button>
+</form>

@@ -19,6 +19,10 @@
   animation: 1s ease-in-out 0s 1 fadeIn;
 }
 
+h1 {
+  animation: 1s ease-in-out 0s 1 fadeIn;
+}
+
 .recipe-details-field {
   padding: 10px;
   overflow: hidden;
@@ -66,10 +70,10 @@
   background-color: #bf0e0e;
   color: white;
   &:hover {
-    background-color: #f01515 !important; 
+    background-color: #f01515 !important;
     transition-property: background-color;
     transition-duration: 0.2s;
-  } 
+  }
 }
 
 .cancel-button {
@@ -79,16 +83,13 @@
     background-color: #59b35c !important;
     transition-property: background-color;
     transition-duration: 0.2s;
-  } 
+  }
 }
-
-
-
 
 form {
   display: flex;
   flex-direction: column;
-  align-items: center;    
+  align-items: center;
   animation: 1s ease-in-out 0s 1 fadeIn;
 }
 
@@ -121,7 +122,8 @@ textarea {
   display: inline-block;
 }
 
-button, .ingredient-controls button {
+button,
+.ingredient-controls button {
   display: inline-block;
   max-width: 150px;
   padding: 10px;
@@ -142,16 +144,18 @@ button, .ingredient-controls button {
 
 .ingredient-labels label {
   margin: 0 75px;
-
 }
 
 .submit-controls {
   margin: 15px;
 }
 
-
 label {
   font-weight: bold;
   font-size: 24px;
   margin-top: 10px;
+}
+
+#comments-title {
+  text-align: center;
 }

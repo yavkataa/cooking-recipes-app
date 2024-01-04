@@ -1,24 +1,26 @@
-@if (!this.loading){ 
-  @if (!this.editing) { 
-    @if (recipe.authorId ==
-    this.localStorage.getItem('_id')) {
-    <div class="controls">
-      <button type="button" (click)="(this.editing = true) && loadRecipeDetails()">Edit recipe</button>
-      @if (!this.deletePrompt) {
-      <button type="button" (click)="this.deletePrompt = true">
-        Delete recipe?
-      </button>
-      } @if (this.deletePrompt) {
-      <button type="button" class="delete-button" (click)="deleteRecipe()">Yes, delete!</button>
-      <button
-        type="button"
-        class="cancel-button"
-        (click)="this.deletePrompt = false"
-      >
-        No, cancel
-      </button>
-    }
-  </div>
+@if (!this.loading){ @if (!this.editing) { @if (recipe.authorId ==
+this.localStorage.getItem('_id')) {
+<div class="controls">
+  <button type="button" (click)="(this.editing = true) && loadRecipeDetails()">
+    Edit recipe
+  </button>
+  @if (!this.deletePrompt) {
+  <button type="button" (click)="this.deletePrompt = true">
+    Delete recipe?
+  </button>
+  } @if (this.deletePrompt) {
+  <button type="button" class="delete-button" (click)="deleteRecipe()">
+    Yes, delete!
+  </button>
+  <button
+    type="button"
+    class="cancel-button"
+    (click)="this.deletePrompt = false"
+  >
+    No, cancel
+  </button>
+  }
+</div>
 }
 
 <div class="recipe">
@@ -32,21 +34,23 @@
     <div class="recipe-details-field" id="recipe-title">
       <h1>{{ recipe.title }}</h1>
     </div>
-    
+
     <div class="recipe-details-field" id="recipe-date">
       Posted on: <i>{{ recipe.date.toString().split("T").at(0) }}</i>
     </div>
 
     <div class="recipe-details-field" id="recipe-author">
       <p>
-        Author: <a href="user/profile/{{recipe.authorId}}"><b>{{ recipe.author }}</b></a>
+        Author:
+        <a href="user/profile/{{ recipe.authorId }}"
+          ><b>{{ recipe.author }}</b></a
+        >
       </p>
     </div>
 
     <div class="recipe-details-field" id="recipe-description">
       {{ recipe.description }}
     </div>
-
 
     <div class="recipe-details-field" id="recipe-ingredients">
       <h3>Ingredients:</h3>
@@ -61,8 +65,11 @@
     </div>
   </div>
 </div>
-} 
-@if (this.editing) {
+
+<h1 id="comments-title">Comments</h1>
+
+@if (this.localStorage.getItem('loggedIn')) {
+<app-comments [recipeId]="recipe._id"></app-comments>} } @if (this.editing) {
 <div class="edit-recipe">
   <div class="controls">
     <button type="button" (click)="this.editing = false">Cancel</button>
@@ -70,14 +77,19 @@
   <form action="" [formGroup]="editRecipeForm">
     <label for="recipe-title">Title: </label>
     <div class="input-field">
-      <input type="text" id="recipe-title" name="recipe-title" formControlName="title"/>
+      <input
+        type="text"
+        id="recipe-title"
+        name="recipe-title"
+        formControlName="title"
+      />
     </div>
-  
+
     <label for="image" class="">Picture (URL):</label>
     <div class="recipe-image">
       <input type="text" name="image" formControlName="image" />
     </div>
-  
+
     <label for="recipe-description">Description: </label>
     <div class="input-field">
       <textarea
@@ -90,7 +102,7 @@
     </div>
 
     <label for="recipe-ingredients">Ingredients: </label>
-  
+
     <div class="ingredients input-field">
       <textarea
         name="ingredients"
@@ -100,7 +112,7 @@
         formControlName="ingredients"
       ></textarea>
     </div>
-  
+
     <label for="recipe-instructions">Instructions: </label>
     <div class="input-field">
       <textarea
@@ -111,13 +123,10 @@
         formControlName="instructions"
       ></textarea>
     </div>
-  
-    
-  
+
     <div class="submit-controls">
       <button type="button" (click)="submitChanges()">Save changes</button>
     </div>
   </form>
 </div>
-}
-}
+} }

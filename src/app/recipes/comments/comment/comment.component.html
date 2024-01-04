@@ -1,0 +1,19 @@
+<div class="comment">
+  <p id="comment">{{ comment.comment }}</p>
+  <p id="author">By:
+    <a href="user/profile/{{ comment.authorId }}">
+      <b>{{ comment.authorName }}</b>
+    </a>
+  </p>
+  <p id="date">On: {{ comment.date.toString().split("T").at(0) }}</p>
+  @if (this.localStorage.getItem('_id') == comment.authorId) { 
+    @if (!this.deletingComment) {
+    <button (click)="this.deletingComment = true">Delete comment?</button>
+  } 
+
+  @if (this.deletingComment) {    
+    <button class="cancel-button" (click)="this.deletingComment = false">No, cancel!</button>
+    <button class="delete-button" (click)="deleteComment()">Yes, delete!</button>
+  }
+}
+</div>

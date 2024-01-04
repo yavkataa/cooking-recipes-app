@@ -1,12 +1,12 @@
-import { ApplicationRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from './types/User';
 import { Router } from '@angular/router';
 import { LocalStorageService } from './local-storage.service';
-import { Application } from 'express';
 import { Recipe } from './types/Recipe';
-const { SERVER_ADDRESS, PORT } = require('../../server/server-config.js');
+import { Comment } from './types/Comment';
+const { SERVER_ADDRESS } = require('../../server/server-config.js');
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +53,7 @@ export class ApiService {
     });
   }
 
-  getUserRecipes(id: string) : Observable<Recipe[]> {
+  getUserRecipes(id: string): Observable<Recipe[]> {
     return this.http.get<Recipe[]>(`${SERVER_ADDRESS}/recipes/user/${id}`);
   }
 
@@ -86,6 +86,34 @@ export class ApiService {
         withCredentials: true,
       }
     );
+  }
+
+  deleteRecipe(id: string): Observable<{}> {
+    return this.http.delete(`${SERVER_ADDRESS}/recipes/delete/${id}`, {
+      withCredentials: true,
+    });
+  }
+
+  updateRecipe(id: string, payload: {}): Observable<{}> {
+    return this.http.put(`${SERVER_ADDRESS}/recipes/recipe/${id}`, payload, {
+      withCredentials: true,
+    });
+  }
+
+  getComments(id: string): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${SERVER_ADDRESS}/comments/${id}`);
+  }
+
+  postComment(comment: {}): Observable<{}> {
+    return this.http.post(`${SERVER_ADDRESS}/post-comment`, comment, {
+      withCredentials: true,
+    });
+  }
+
+  deleteComment(id: string): Observable<{}> {
+    return this.http.delete(`${SERVER_ADDRESS}/comments/${id}`, {
+      withCredentials: true,
+    });
   }
 
   storeLoggedUserData(data: User): void {
@@ -124,18 +152,6 @@ export class ApiService {
       },
     });
     return false;
-  }
-
-  deleteRecipe(id: string): Observable<{}> {
-    return this.http.delete(`${SERVER_ADDRESS}/recipes/delete/${id}`, {
-      withCredentials: true,
-    });
-  }
-
-  updateRecipe(id: string, payload: {}): Observable<{}> {
-    return this.http.put(`${SERVER_ADDRESS}/recipes/recipe/${id}`, payload, {
-      withCredentials: true,
-    });
   }
 
   logout(): void {
