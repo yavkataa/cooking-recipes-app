@@ -1,7 +1,8 @@
 <div class="comments">
-@for (comment of comments; track $index) {
+  @for (comment of comments; track $index) {
   <app-comment [comment]="comment" class="comment"></app-comment>
-}
+  }
 </div>
 
-<app-comment-form></app-comment-form>
+@if (this.localStorage.getItem('loggedIn')) {<app-comment-form
+></app-comment-form>}

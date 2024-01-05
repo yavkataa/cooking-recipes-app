@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -9,6 +9,7 @@ import {
 import { LocalStorageService } from '../../local-storage.service';
 import { ApiService } from '../../api.service';
 import { Router } from '@angular/router';
+import { Tags } from '../../../../assets/tags/tags';
 
 @Component({
   selector: 'app-new-recipe',
@@ -21,14 +22,23 @@ export class NewRecipeComponent {
   localStorage: LocalStorageService;
   api: ApiService;
   router: Router;
+  tags: string[];
+  selectedTags: string[];
+  foundTags: string[];
+  tagSearchQuery: string;
+
   constructor(
     api: ApiService,
     localStorage: LocalStorageService,
-    router: Router
+    router: Router,
   ) {
     this.localStorage = localStorage;
     this.api = api;
     this.router = router;
+    this.tags = Tags;
+    this.foundTags = this.tags;
+    this.selectedTags = [];
+    this.tagSearchQuery = '';
   }
 
   newRecipeForm = new FormGroup({
@@ -37,7 +47,39 @@ export class NewRecipeComponent {
     description: new FormControl('', [Validators.required]),
     instructions: new FormControl('', [Validators.required]),
     ingredients: new FormControl('', [Validators.required]),
+    tags: new FormControl(''),
   });
+
+  updateTags(): void {
+    this.foundTags = [];
+    if (this.newRecipeForm.controls.tags.value) {
+      this.tagSearchQuery =
+        this.newRecipeForm.controls.tags.value.toLowerCase();
+
+      for (let entry of this.tags) {
+        if (entry.toLowerCase().includes(this.tagSearchQuery)) {
+          if (!this.foundTags.includes(entry)) {
+            this.foundTags.push(entry);
+          }
+        }
+      }
+    } else {
+      this.foundTags = this.tags;
+    }
+  }
+
+  selectTag(tag: string): void {
+    if (!this.selectedTags.includes(tag)) {
+      this.selectedTags.push(tag);
+    }
+  }
+
+  removeSelectedTag(tag: string) {
+    if (this.selectedTags.includes(tag)) {
+      const indexToRemove = this.selectedTags.indexOf(tag);
+      this.selectedTags.splice(indexToRemove, 1);
+    }
+  }
 
   submitForm(): void {
     const recipeFormControls = this.newRecipeForm.controls;
@@ -46,6 +88,7 @@ export class NewRecipeComponent {
     const recipeDescription = recipeFormControls.description.value;
     const recipeInstructions = recipeFormControls.instructions.value;
     const recipeIngredients = recipeFormControls.ingredients.value;
+    const recipeTags = this.selectedTags;
     const recipeAuthor = this.localStorage.getItem('name');
     const recipeAuthorId = this.localStorage.getItem('_id');
 
@@ -73,7 +116,8 @@ export class NewRecipeComponent {
         recipeInstructions,
         recipeIngredients,
         recipeAuthor,
-        recipeAuthorId
+        recipeAuthorId,
+        recipeTags
       )
       .subscribe({
         next: (result) => {

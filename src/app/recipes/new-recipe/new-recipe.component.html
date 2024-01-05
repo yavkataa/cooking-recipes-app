@@ -43,6 +43,29 @@
     ></textarea>
   </div>
 
+  <label for="tags">Tags:</label>
+  <div class="input-field">
+    <input type="text" name="tags" formControlName="tags" (keyup)="updateTags()">
+    <div class="result-box">
+      <ul>
+        @for (tag of foundTags; track $index) {
+          <li (click)="selectTag(tag)">{{tag}}</li>
+        }
+      </ul>
+    </div>
+
+    <h2>Selected tags:</h2>
+
+    <div class="included-tags">
+      <ul>
+        @for (tag of selectedTags; track $index) {
+          <li (click)="removeSelectedTag(tag)">{{tag}}</li>
+        }
+      </ul>
+    </div>
+  </div>
+  
+
   
 
   <div class="submit-controls">

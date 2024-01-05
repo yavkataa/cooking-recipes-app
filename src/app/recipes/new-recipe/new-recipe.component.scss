@@ -2,7 +2,7 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 15px;  
+  padding: 15px;
   animation: 1s ease-in-out 0s 1 fadeIn;
 }
 
@@ -35,7 +35,8 @@ textarea {
   display: inline-block;
 }
 
-button, .ingredient-controls button {
+button,
+.ingredient-controls button {
   display: inline-block;
   max-width: 150px;
   padding: 10px;
@@ -55,7 +56,6 @@ button, .ingredient-controls button {
 
 .ingredient-labels label {
   margin: 0 75px;
-
 }
 
 .submit-controls {
@@ -66,6 +66,57 @@ label {
   font-weight: bold;
   font-size: 24px;
   margin-top: 10px;
+}
+
+h2 {
+  align-self: center;
+  padding: 10px;
+  text-align: center;
+}
+
+.result-box {
+  ul {
+    padding: 10px 10px;
+    li {
+      list-style: none;
+      border-radius: 3px;
+      padding: 10px 10px;
+      &:hover {
+        background-color: #dabc93;
+        cursor: pointer;
+        transition-duration: 0.2s;
+        transition-property: background-color;
+      }
+    }
+  }
+}
+
+.included-tags {
+  ul {
+    list-style: none;
+    padding: 10px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    max-width: 500px;
+    li {
+      padding: 10px 10px;
+      max-width: 120px;
+      width: fit-content;
+      border-radius: 15px;
+      &:hover {
+        background-color: #dabc93;
+        cursor: pointer;
+        transition-duration: 0.2s;
+        transition-property: background-color;
+      }
+    }
+  }
+}
+
+.result-box {
+  max-height: 250px;
+  overflow: auto;
 }
 
 @keyframes fadeIn {

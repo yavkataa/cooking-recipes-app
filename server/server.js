@@ -56,6 +56,7 @@ const recipeSchema = new Schema({
     favourites: Number,
   },
   authorId: ObjectId,
+  tags: [],
 });
 
 //build a model from the recipe schema
@@ -310,6 +311,7 @@ const postRecipe = async (req, res, next) => {
     images,
     instructions,
     authorId,
+    tags,
   } = req.body;
 
   const recipe = new Recipe({
@@ -318,6 +320,7 @@ const postRecipe = async (req, res, next) => {
     description: description,
     ingredients: ingredients,
     images: images,
+    tags: tags,
     meta: {
       likes: 0,
       favourites: 0,
@@ -361,7 +364,7 @@ const deleteRecipe = async (id) => {
 const getUser = async (id) => {
   const user = client
     .db(DB_NAME)
-    .collection("users")
+    .collection(USER_COLLECTION)
     .findOne(
       { _id: new ObjectId(id) },
       { projection: { password: 0, role: 0 } }
