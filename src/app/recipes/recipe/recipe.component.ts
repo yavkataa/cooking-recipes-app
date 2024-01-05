@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommentsComponent } from '../comments/comments.component';
+import { Tags } from '../../../../assets/tags/tags';
 
 @Component({
   selector: 'app-recipe',
@@ -28,6 +29,10 @@ export class RecipeComponent implements OnInit {
   editing: boolean;
   loading: boolean;
   router: Router;
+  tags: string[];
+  selectedTags: string[];
+  foundTags: string[];
+  tagSearchQuery: string;
   constructor(
     api: ApiService,
     activatedRoute: ActivatedRoute,
@@ -41,6 +46,10 @@ export class RecipeComponent implements OnInit {
     this.deletePrompt = false;
     this.editing = false;
     this.loading = true;
+    this.tags = Tags;
+    this.foundTags = this.tags;
+    this.selectedTags = [];
+    this.tagSearchQuery = '';
   }
 
   @Input('recipe') recipe: Recipe = {
@@ -57,6 +66,7 @@ export class RecipeComponent implements OnInit {
     },
     instructions: '',
     authorId: '',
+    tags: [''],
   };
 
   editRecipeForm = new FormGroup({
@@ -65,6 +75,7 @@ export class RecipeComponent implements OnInit {
     description: new FormControl('', [Validators.required]),
     instructions: new FormControl('', [Validators.required]),
     ingredients: new FormControl('', [Validators.required]),
+    tags: new FormControl(''),
   });
 
   ngOnInit(): void {
@@ -80,6 +91,7 @@ export class RecipeComponent implements OnInit {
         controls['description'].setValue(this.recipe.description);
         controls['instructions'].setValue(this.recipe.instructions);
         controls['ingredients'].setValue(this.recipe.ingredients);
+        this.selectedTags = this.recipe.tags;
       }
     }, 100);
   }
@@ -111,11 +123,42 @@ export class RecipeComponent implements OnInit {
         }
 
         if (err.status == 401) {
-          this.api.clearLoggedUserData
+          this.api.clearLoggedUserData;
           this.router.navigate(['/']);
         }
       },
     });
+  }
+
+  updateTags(): void {
+    this.foundTags = [];
+    if (this.editRecipeForm.controls.tags.value) {
+      this.tagSearchQuery =
+        this.editRecipeForm.controls.tags.value.toLowerCase();
+
+      for (let entry of this.tags) {
+        if (entry.toLowerCase().includes(this.tagSearchQuery)) {
+          if (!this.foundTags.includes(entry)) {
+            this.foundTags.push(entry);
+          }
+        }
+      }
+    } else {
+      this.foundTags = this.tags;
+    }
+  }
+
+  selectTag(tag: string): void {
+    if (!this.selectedTags.includes(tag)) {
+      this.selectedTags.push(tag);
+    }
+  }
+
+  removeSelectedTag(tag: string) {
+    if (this.selectedTags.includes(tag)) {
+      const indexToRemove = this.selectedTags.indexOf(tag);
+      this.selectedTags.splice(indexToRemove, 1);
+    }
   }
 
   submitChanges(): void {
@@ -127,12 +170,14 @@ export class RecipeComponent implements OnInit {
       const description = controls.description.value;
       const instructions = controls.instructions.value;
       const ingredients = controls.ingredients.value;
+      const tags = this.selectedTags;
       const updateParams = {
         title: title,
-        images: [{url:image}],
+        images: [{ url: image }],
         description: description,
         ingredients: ingredients,
-        instructions: instructions,        
+        instructions: instructions,
+        tags: tags,
       };
 
       this.api.updateRecipe(id, updateParams).subscribe({
@@ -140,17 +185,15 @@ export class RecipeComponent implements OnInit {
           this.editing = false;
           this.loading = true;
           this.fetchRecipe();
-        }, 
+        },
         error: (err) => {
           console.log(err.error.message);
           if (err.status == 401) {
             this.api.clearLoggedUserData();
             this.router.navigate(['/']);
           }
-        }
-      })
+        },
+      });
     }
-
-    
   }
 }

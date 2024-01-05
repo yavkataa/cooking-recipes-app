@@ -9,7 +9,7 @@ export type Meta = {
 
 export type Recipe = {
   _id: string;
-  title: string; 
+  title: string;
   author: string;
   description: string;
   ingredients: string;
@@ -18,4 +18,5 @@ export type Recipe = {
   meta: Meta;
   instructions: string;
   authorId: string;
+  tags: string[];
 };

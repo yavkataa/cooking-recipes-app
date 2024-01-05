@@ -68,7 +68,8 @@ export class ApiService {
     instructions: string,
     ingredients: string,
     author: string,
-    authorId: string
+    authorId: string, 
+    tags: string[],
   ): Observable<{ _id: string }> {
     let body = {
       title: title,
@@ -78,6 +79,7 @@ export class ApiService {
       ingredients: ingredients,
       author: author,
       authorId: authorId,
+      tags: tags,
     };
     return this.http.post<{ _id: string }>(
       `${SERVER_ADDRESS}/post-recipe`,

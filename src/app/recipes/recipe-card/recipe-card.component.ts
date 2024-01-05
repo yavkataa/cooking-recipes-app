@@ -24,5 +24,6 @@ export class RecipeCardComponent {
     },
     instructions: '',
     authorId: '',
+    tags: [''],
   };
 }
