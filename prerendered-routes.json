@@ -1,0 +1,13 @@
+{
+  "routes": [
+    "/",
+    "/about",
+    "/contacts",
+    "/home",
+    "/login",
+    "/recipes",
+    "/recipes/new-recipe",
+    "/register",
+    "/user/profile"
+  ]
+}
