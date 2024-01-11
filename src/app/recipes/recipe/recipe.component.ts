@@ -91,7 +91,12 @@ export class RecipeComponent implements OnInit {
         controls['description'].setValue(this.recipe.description);
         controls['instructions'].setValue(this.recipe.instructions);
         controls['ingredients'].setValue(this.recipe.ingredients);
-        this.selectedTags = this.recipe.tags;
+        if (this.recipe.tags) {
+          this.selectedTags = this.recipe.tags;
+        } else {
+          this.selectedTags = [];
+        }
+        
       }
     }, 100);
   }
@@ -124,7 +129,7 @@ export class RecipeComponent implements OnInit {
 
         if (err.status == 401) {
           this.api.clearLoggedUserData;
-          this.router.navigate(['/']);
+          this.router.navigate(['home']);
         }
       },
     });
@@ -190,7 +195,7 @@ export class RecipeComponent implements OnInit {
           console.log(err.error.message);
           if (err.status == 401) {
             this.api.clearLoggedUserData();
-            this.router.navigate(['/']);
+            this.router.navigate(['home']);
           }
         },
       });

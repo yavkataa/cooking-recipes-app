@@ -30,7 +30,7 @@ export class NewRecipeComponent {
   constructor(
     api: ApiService,
     localStorage: LocalStorageService,
-    router: Router,
+    router: Router
   ) {
     this.localStorage = localStorage;
     this.api = api;
@@ -126,7 +126,7 @@ export class NewRecipeComponent {
         error: (err) => {
           if ((err.status = 401)) {
             this.api.clearLoggedUserData();
-            this.router.navigate(['/']);
+            this.router.navigate(['home']);
           }
           if (err.status != 0) {
             console.log(err);
