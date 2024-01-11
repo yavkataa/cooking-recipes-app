@@ -4,10 +4,9 @@ Cooking Recipes Project TODO list:
 TODO:
 
 
-Add "tags" to submit forms, storage models and existing recipes, to help with browsing through existing recipes. 
+
 Include tags filter on the browse page. 
 Add pagination on the recipes view page (and potentially more recipes so that the pagination has a purpose)
-Add comments to recipes
 Add reviews to recipes
 Add Functionality to add recipes to favourites in the user account
 Add Cookbooks (collections of recipes which can be browsed on the website)
@@ -17,6 +16,8 @@ Add a contact form in the contacts section, along with a panel for administrator
 
 
 Completed: 
+Add comments to recipes
+Add "tags" to submit forms, storage models and existing recipes, to help with browsing through existing recipes. 
 User authentication (login, register) on client and server
 Create new recipe page
 View recipes page with recipe cards

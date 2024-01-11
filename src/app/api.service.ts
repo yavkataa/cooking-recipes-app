@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
 import { LocalStorageService } from './local-storage.service';
 import { Recipe } from './types/Recipe';
 import { Comment } from './types/Comment';
-const { SERVER_ADDRESS } = require('../../server/server-config.js');
+import { environment } from '../environments/environment';
+const  SERVER_ADDRESS = `${environment.SERVER_ADDRESS}`;
 
 @Injectable({
   providedIn: 'root',
@@ -164,7 +165,7 @@ export class ApiService {
       next: () => {
         console.log(result);
         this.clearLoggedUserData();
-        this.router.navigate(['/']);
+        this.router.navigate(['home']);
       },
       error: (err) => {
         if (err.status !== 0) {

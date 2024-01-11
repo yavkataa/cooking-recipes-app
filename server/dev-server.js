@@ -24,7 +24,8 @@ const app = express();
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true }));
+app.use(cors({ credentials: true, origin: "https://www.cookscooks.xyz"}));
+
 
 //create an instance of the mongo client to use for REST
 const client = new MongoClient(MONGO_STRING + MONGO_STRING_OPTIONS, {
@@ -187,10 +188,12 @@ const register = async (req, res, next) => {
           { expiresIn: maxAge }
         );
         res.cookie("jwt", token, {
-          httpOnly: true,
+          secure: true,
+          sameSite: "None",
+          //domain: ".cookscooks.xyz",
           maxAge: maxAge * 1000,
         });
-        res.set("Access-Control-Allow-Credentials", req.hostname);
+        ses.set("Access-Control-Allow-Credentials", "true");
         res.status(201).json({
           username: username,
           _id: user._id,
@@ -222,10 +225,12 @@ const login = async (req, res, next) => {
           { expiresIn: maxAge }
         );
         res.cookie("jwt", token, {
-          httpOnly: true,
+          secure: true,
+          sameSite: "None",
+          //domain: ".cookscooks.xyz",
           maxAge: maxAge * 1000,
         });
-        res.set("Access-Control-Allow-Origin", req.hostname);
+        res.set("Access-Control-Allow-Credentials", "true");
         res.status(201).json({
           username: findUser.username,
           _id: findUser._id,

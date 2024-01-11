@@ -44,3 +44,4 @@ Thumbs.db
 
 # App configuration
 server/server-config.js
+server/index.js

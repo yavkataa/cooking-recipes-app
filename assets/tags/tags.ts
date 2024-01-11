@@ -75,7 +75,7 @@ export const Tags = [
 "Cajun",
 "Asian Fusion",
 "Fusion",
-"Comfort Food:",
+"Comfort Food",
 "Comfort",
 "Classic",
 "Homestyle",
