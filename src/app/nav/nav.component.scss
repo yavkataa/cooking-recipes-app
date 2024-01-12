@@ -30,6 +30,7 @@ nav {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
   }
 
 
@@ -50,4 +51,14 @@ nav {
     font-weight: bold;
     color: white;
   }
+}
+
+.utility {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.loader {
+  transition: height 0.2s;
 }

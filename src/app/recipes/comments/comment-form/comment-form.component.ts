@@ -54,14 +54,17 @@ export class CommentFormComponent {
       authorName: this.localStorage.getItem('name'),
     };
 
+    this.api.loading = true;
+
     this.api.postComment(commentPayload).subscribe({
       next: (result) => {
         if (window) {
-          console.log(result);
+          this.api.loading = false;
           window.location.reload();
         }
       }, 
       error: (err) => {
+        this.api.loading = false;
         if (err.status == 401) {
           this.api.clearLoggedUserData();
           if (window) {

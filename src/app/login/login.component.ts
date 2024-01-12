@@ -53,10 +53,13 @@ export class LoginComponent {
       return;
     }
 
+    this.api.loading = true;
+
     let result = this.api.login(loginUser, loginPassword);
 
     result.subscribe({
       next: (result) => {
+        this.api.loading = false;
         this.api.clearLoggedUserData();
         this.api.storeLoggedUserData(result);
         this.router.navigate(['recipes']);

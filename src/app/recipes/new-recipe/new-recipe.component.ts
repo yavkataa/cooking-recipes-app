@@ -108,6 +108,8 @@ export class NewRecipeComponent {
       return;
     }
 
+    this.api.loading = true;
+
     this.api
       .postRecipe(
         recipeTitle,
@@ -121,10 +123,12 @@ export class NewRecipeComponent {
       )
       .subscribe({
         next: (result) => {
+          this.api.loading = false;
           this.router.navigate([`recipes/recipe/${result._id}`]);
         },
         error: (err) => {
-          if ((err.status = 401)) {
+          this.api.loading = false;
+          if ((err.status = 401)) {            
             this.api.clearLoggedUserData();
             this.router.navigate(['home']);
           }

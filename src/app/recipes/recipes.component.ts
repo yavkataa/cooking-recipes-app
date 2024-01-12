@@ -26,24 +26,30 @@ export class RecipesComponent implements OnInit {
     const userId = this.activatedRoute.snapshot.params['id'];
 
     if (!userId) {
+      this.api.loading = true;
       this.api.getRecipes().subscribe({
         next: (recipes) => {
           this.recipes = recipes;
+          this.api.loading = false;
         },
         error: (err) => {
           if (err.status !== 0) {
             console.log(err);
+            this.api.loading = false;
           }
         },
       });
     }
 
     if (userId) {
+      this.api.loading = true;
       this.api.getUserRecipes(userId).subscribe({
         next: (recipes) => {
+          this.api.loading = false;
           this.recipes = recipes;
         },
         error: (err) => {
+          this.api.loading = false;
           if (err.status !== 0) {
             console.log(err);
           }
