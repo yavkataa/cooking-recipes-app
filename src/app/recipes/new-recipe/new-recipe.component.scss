@@ -10,17 +10,18 @@ input {
   padding: 10px;
   border-radius: 15px;
   background-color: #dabc93;
-  width: 500px;
   min-width: 150px;
-  max-width: 500px;
+  width: 500px;
+  max-width: 80vw;
 }
 
 .input-field {
   padding: 10px;
+  
 }
 
 textarea {
-  max-width: 500px;
+  max-width: 80vw;
   max-height: 500px;
   min-width: 200px;
   min-height: 200px;
@@ -79,7 +80,7 @@ h2 {
     padding: 10px 10px;
     li {
       list-style: none;
-      border-radius: 3px;
+      border-radius: 15px;
       padding: 10px 10px;
       &:hover {
         background-color: #dabc93;
