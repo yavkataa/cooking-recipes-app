@@ -24,8 +24,8 @@ const app = express();
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: "https://www.cookscooks.xyz"}));
-
+//app.use(cors({ credentials: true, origin: "https://www.cookscooks.xyz"}));
+app.use(cors({ credentials: true }));
 
 //create an instance of the mongo client to use for REST
 const client = new MongoClient(MONGO_STRING + MONGO_STRING_OPTIONS, {

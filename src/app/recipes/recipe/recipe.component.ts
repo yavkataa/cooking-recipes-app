@@ -96,19 +96,21 @@ export class RecipeComponent implements OnInit {
         } else {
           this.selectedTags = [];
         }
-        
       }
     }, 100);
   }
 
   deleteRecipe(): void {
+    this.api.loading = true;
     const id = this.activatedRoute.snapshot.params['id'];
     this.api.deleteRecipe(id).subscribe({
       next: (result) => {
+        this.api.loading = false;
         this.router.navigate(['recipes']);
       },
       error: (err) => {
         if (err.status === 401) {
+          this.api.loading = false;
           this.api.clearLoggedUserData();
         }
       },
@@ -116,18 +118,22 @@ export class RecipeComponent implements OnInit {
   }
 
   fetchRecipe(): void {
+    this.api.loading = true;
     const id = this.activatedRoute.snapshot.params['id'];
     this.api.getOneRecipe(id).subscribe({
       next: (recipe) => {
         this.recipe = recipe;
         this.loading = false;
+        this.api.loading = false;
       },
       error: (err) => {
         if (err.status !== 0) {
           console.log(err);
+          this.api.loading = false;
         }
 
         if (err.status == 401) {
+          this.api.loading = false;
           this.api.clearLoggedUserData;
           this.router.navigate(['home']);
         }
@@ -185,13 +191,17 @@ export class RecipeComponent implements OnInit {
         tags: tags,
       };
 
+      this.api.loading = true;
+
       this.api.updateRecipe(id, updateParams).subscribe({
         next: (result) => {
           this.editing = false;
           this.loading = true;
+          this.api.loading = false;
           this.fetchRecipe();
         },
         error: (err) => {
+          this.api.loading = false;
           console.log(err.error.message);
           if (err.status == 401) {
             this.api.clearLoggedUserData();

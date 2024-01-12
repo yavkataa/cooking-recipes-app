@@ -7,7 +7,7 @@ import { LocalStorageService } from './local-storage.service';
 import { Recipe } from './types/Recipe';
 import { Comment } from './types/Comment';
 import { environment } from '../environments/environment';
-const  SERVER_ADDRESS = `${environment.SERVER_ADDRESS}`;
+const SERVER_ADDRESS = `${environment.SERVER_ADDRESS}`;
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +17,8 @@ export class ApiService {
   loggedIn: boolean;
   router: Router;
   localStorage: LocalStorageService;
+  loading: boolean;
+  message: string = '';
   constructor(
     http: HttpClient,
     router: Router,
@@ -26,6 +28,7 @@ export class ApiService {
     this.router = router;
     this.loggedIn = false;
     this.localStorage = localStorage;
+    this.loading = false;
   }
 
   login(username: string, password: string): Observable<User> {
@@ -69,8 +72,8 @@ export class ApiService {
     instructions: string,
     ingredients: string,
     author: string,
-    authorId: string, 
-    tags: string[],
+    authorId: string,
+    tags: string[]
   ): Observable<{ _id: string }> {
     let body = {
       title: title,
@@ -163,7 +166,6 @@ export class ApiService {
     });
     result.subscribe({
       next: () => {
-        console.log(result);
         this.clearLoggedUserData();
         this.router.navigate(['home']);
       },

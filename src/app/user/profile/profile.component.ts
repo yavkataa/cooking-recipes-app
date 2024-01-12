@@ -41,8 +41,10 @@ export class ProfileComponent implements OnInit {
     const userId = this.activatedRoute.snapshot.params['id'];
     if (userId) {
       this.specificUser = true;
+      this.api.loading = true;
       this.api.getUserDetails(userId).subscribe({
         next: (user) => {
+          this.api.loading = false;
           this.user = user;
         },
         error: (err) => {
@@ -59,7 +61,9 @@ export class ProfileComponent implements OnInit {
     if (userId) {
       this.router.navigate([`recipes/user/${userId}`]);
     } else {
-      this.router.navigate([`recipes/user/${this.localStorage.getItem('_id')}`]);
+      this.router.navigate([
+        `recipes/user/${this.localStorage.getItem('_id')}`,
+      ]);
     }
   }
 }

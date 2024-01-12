@@ -11,5 +11,5 @@ import { NavComponent } from './nav/nav.component';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'cooking-recipes-app';
+  title = 'cooking-recipes-app';  
 }

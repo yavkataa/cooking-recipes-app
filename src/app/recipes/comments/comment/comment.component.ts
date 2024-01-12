@@ -23,14 +23,17 @@ export class CommentComponent {
   }
 
   deleteComment(): void {
+    this.api.loading = true;
     const id = this.comment._id;
     this.api.deleteComment(id).subscribe({
       next: (result) => {
+        this.api.loading = false;
         if (window) {
           window.location.reload();
         }
       }, 
       error: (err) => {
+        this.api.loading = false;
         if (err.status == 401) {
           this.api.clearLoggedUserData();
           if (window) {

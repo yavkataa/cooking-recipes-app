@@ -1,8 +1,5 @@
 <nav>
-
-  <div class="nav-element title">
-    CooksCooks
-  </div>
+  <div class="nav-element title">CooksCooks</div>
 
   <div class="nav-element buttons">
     <a href="home">Home</a>
@@ -14,16 +11,21 @@
     <a href="login">Login</a>
     <a href="register">Register</a>
     } @if (this.localStorage.getItem('loggedIn') == 'true') {
-    <a href="recipes/user/{{this.localStorage.getItem('_id')}}">My Recipes</a>
+    <a href="recipes/user/{{ this.localStorage.getItem('_id') }}">My Recipes</a>
     <a href="recipes/new-recipe">Post new recipe</a>
     <a href="" (click)="this.api.logout()">Logout</a>
     }
   </div>
 
   <div class="nav-element user">
-    @if (this.localStorage.getItem('name')) {
-    Logged in as: <a href="user/profile">{{this.localStorage.getItem('name')}}</a>
+    @if (this.localStorage.getItem('name')) { Logged in as:
+    <a href="user/profile">{{ this.localStorage.getItem("name") }}</a>
     }
   </div>
-
 </nav>
+
+<div class="utility">
+  @if (this.api.loading) {
+  <app-loader class="loader"></app-loader>
+  }
+</div>

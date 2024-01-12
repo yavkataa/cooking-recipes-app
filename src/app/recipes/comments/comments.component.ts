@@ -38,11 +38,14 @@ export class CommentsComponent implements OnInit {
   }
 
   getComments(id: string) {
+    this.api.loading = true;
     this.api.getComments(id).subscribe({
       next: (comments) => {
+        this.api.loading = false;
         this.comments = comments;
       },
       error: (err) => {
+        this.api.loading = false;
         console.log(err.error.message);
       },
     });
