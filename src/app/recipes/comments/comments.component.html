@@ -1,8 +1,10 @@
 <div class="comments">
   @for (comment of comments; track $index) {
-  <app-comment [comment]="comment" class="comment"></app-comment>
+  <app-comment [comment]="comment" class="comment" (removeCommentEvent)="removeComment($event)"></app-comment>
   }
 </div>
 
 @if (this.localStorage.getItem('loggedIn')) {<app-comment-form
-></app-comment-form>}
+  (newItemEvent)="addCommentToDisplay($event)"
+></app-comment-form
+>}

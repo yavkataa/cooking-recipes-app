@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../api.service';
 import { LocalStorageService } from '../../../local-storage.service';
@@ -9,6 +9,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { EventEmitter } from '@angular/core';
+import { Comment } from '../../../types/Comment';
 
 @Component({
   selector: 'app-comment-form',
@@ -18,6 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './comment-form.component.scss',
 })
 export class CommentFormComponent {
+  @Output() newItemEvent = new EventEmitter();
   api: ApiService;
   localStorage: LocalStorageService;
   router: Router;
@@ -39,6 +42,10 @@ export class CommentFormComponent {
     comment: new FormControl('', [Validators.required]),
   });
 
+  displayNewlyAddedComment(comment: any): void {
+    this.newItemEvent.emit(comment);
+  }
+
   submitComment() {
     const comment = this.CommentForm.controls.comment.value;
     const recipeId = this.router;
@@ -58,21 +65,23 @@ export class CommentFormComponent {
 
     this.api.postComment(commentPayload).subscribe({
       next: (result) => {
-        if (window) {
-          this.api.loading = false;
-          window.location.reload();
+        this.api.loading = false;
+        const commentToDisplay = {
+          ...commentPayload,
+          date: new Date(),
+          _id: result._id,
+        };
+        if (commentToDisplay) {
+          this.displayNewlyAddedComment(commentToDisplay as Comment);
         }
-      }, 
+      },
       error: (err) => {
         this.api.loading = false;
         if (err.status == 401) {
           this.api.clearLoggedUserData();
-          if (window) {
-            window.location.reload();
-          }
         }
         console.log(err);
-      }
-    })
+      },
+    });
   }
 }
