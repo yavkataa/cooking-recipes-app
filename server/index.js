@@ -15,6 +15,7 @@ const {
   PORT,
   JWT_SECRET_STRING,
 } = require("./server-config");
+
 const { Schema } = mongoose;
 const DB_NAME = "recipes-db";
 const RECIPE_COLLECTION = "recipes";
@@ -26,8 +27,7 @@ const app = express();
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
-//app.use(cors({ credentials: true, origin: "https://www.cookscooks.xyz"}));
-app.use(cors({ credentials: true }));
+app.use(cors({ credentials: true, origin: "https://www.cookscooks.xyz"}));
 
 //create an instance of the mongo client to use for REST
 const client = new MongoClient(MONGO_STRING + MONGO_STRING_OPTIONS, {
@@ -192,10 +192,12 @@ const register = async (req, res, next) => {
         res.cookie("jwt", token, {
           secure: true,
           sameSite: "None",
-          //domain: ".cookscooks.xyz",
+          domain: ".cookscooks.xyz",
           maxAge: maxAge * 1000,
         });
-        ses.set("Access-Control-Allow-Credentials", "true");
+        res.set("Access-Control-Expose-Headers", "Set-Cookie");
+        res.set("Access-Control-Allow-Credentials", "true");
+        res.set("Access-Control-Allow-Origin", ORIGIN);
         res.status(201).json({
           username: username,
           _id: user._id,
@@ -229,10 +231,12 @@ const login = async (req, res, next) => {
         res.cookie("jwt", token, {
           secure: true,
           sameSite: "None",
-          //domain: ".cookscooks.xyz",
-          maxAge: maxAge * 1000,
+          domain: ".cookscooks.xyz",
+          maxAge: maxAge * 1000          
         });
+        res.set("Access-Control-Expose-Headers", "Set-Cookie");
         res.set("Access-Control-Allow-Credentials", "true");
+        res.set("Access-Control-Allow-Origin", ORIGIN);
         res.status(201).json({
           username: findUser.username,
           _id: findUser._id,

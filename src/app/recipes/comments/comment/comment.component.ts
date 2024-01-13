@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Comment } from '../../../types/Comment';
 import { LocalStorageService } from '../../../local-storage.service';
@@ -9,10 +9,11 @@ import { ApiService } from '../../../api.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './comment.component.html',
-  styleUrl: './comment.component.scss'
+  styleUrl: './comment.component.scss',
 })
 export class CommentComponent {
   @Input('comment') comment: Comment;
+  @Output() removeCommentEvent = new EventEmitter<any>();
   localStorage: LocalStorageService;
   deletingComment: boolean;
   api: ApiService;
@@ -28,19 +29,14 @@ export class CommentComponent {
     this.api.deleteComment(id).subscribe({
       next: (result) => {
         this.api.loading = false;
-        if (window) {
-          window.location.reload();
-        }
-      }, 
+        this.removeCommentEvent.emit(id);
+      },
       error: (err) => {
         this.api.loading = false;
         if (err.status == 401) {
           this.api.clearLoggedUserData();
-          if (window) {
-            window.location.reload();
-          }
         }
-      }
-    })
+      },
+    });
   }
 }

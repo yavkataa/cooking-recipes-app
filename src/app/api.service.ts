@@ -110,8 +110,8 @@ export class ApiService {
     return this.http.get<Comment[]>(`${SERVER_ADDRESS}/comments/${id}`);
   }
 
-  postComment(comment: {}): Observable<{}> {
-    return this.http.post(`${SERVER_ADDRESS}/post-comment`, comment, {
+  postComment(comment: {}): Observable<{_id: string}> {
+    return this.http.post<{_id: string}>(`${SERVER_ADDRESS}/post-comment`, comment, {
       withCredentials: true,
     });
   }

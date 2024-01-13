@@ -37,6 +37,19 @@ export class CommentsComponent implements OnInit {
     this.getComments(this.recipeId);
   }
 
+  addCommentToDisplay(comment: any) {
+    this.comments.push(comment);
+  }
+
+  removeComment(id: string) {
+    for (let index = 0; index < this.comments.length; index++) {
+      const element = this.comments[index];
+      if (element._id == id) {
+        this.comments.splice(index, 1);
+      }
+    }
+  }
+
   getComments(id: string) {
     this.api.loading = true;
     this.api.getComments(id).subscribe({
