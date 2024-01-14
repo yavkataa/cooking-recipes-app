@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../api.service';
 import { RouterModule } from '@angular/router';
 import { LocalStorageService } from '../local-storage.service';
+import { ShowcaseComponent } from './showcase/showcase.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, ShowcaseComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
@@ -21,5 +22,9 @@ export class HomeComponent {
 
   logs() {
     console.log(this.api.loggedIn);
+  }
+
+  fetchRandomRecipes(count: number): void {
+
   }
 }

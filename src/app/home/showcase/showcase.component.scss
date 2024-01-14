@@ -1,0 +1,53 @@
+.showcase-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  a {
+    text-decoration: none;
+    color: white;
+    text-shadow: 2px 2px 3px black;
+
+    .recipe-card {
+      padding: 15px;
+      background-color: #dabc93;
+      border-radius: 15px;
+      margin: 15px;
+      max-width: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+      align-items: center;
+      overflow: hidden;
+      max-height: 600px;
+      height: 600px;
+  
+      
+  
+      .recipe-card-field {
+        padding: 5px;
+        overflow: hidden;
+        max-height: 250px;        
+      }
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        overflow: hidden;
+      }
+  
+      .title {
+        font-size: 18px;
+      }
+  
+      &:hover {
+        transition-property: background-color;
+        transition-duration: 0.2s;
+        background-color: #b5895a;
+      }
+    }
+  }
+}
+
+

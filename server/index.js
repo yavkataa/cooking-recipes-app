@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-const ORIGIN = "https://www.cookscooks.xyz"
+const ORIGIN = "https://www.cookscooks.xyz";
 const {
   MONGO_STRING,
   MONGO_STRING_OPTIONS,
@@ -27,7 +27,7 @@ const app = express();
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: "https://www.cookscooks.xyz"}));
+app.use(cors({ credentials: true, origin: "https://www.cookscooks.xyz" }));
 
 //create an instance of the mongo client to use for REST
 const client = new MongoClient(MONGO_STRING + MONGO_STRING_OPTIONS, {
@@ -232,7 +232,7 @@ const login = async (req, res, next) => {
           secure: true,
           sameSite: "None",
           domain: ".cookscooks.xyz",
-          maxAge: maxAge * 1000          
+          maxAge: maxAge * 1000,
         });
         res.set("Access-Control-Expose-Headers", "Set-Cookie");
         res.set("Access-Control-Allow-Credentials", "true");
@@ -310,6 +310,15 @@ const getUserRecipes = async (id) => {
     .find({ authorId: new ObjectId(id) })
     .toArray();
   return userRecipes;
+};
+
+//fetch N number of random recipes
+const fetchRandomRecipes = async (number) => {
+  const recipes = await client
+    .db(DB_NAME)
+    .aggregate([{ $sample: { size: Number(number) } }])
+    .toArray();
+  return recipes;
 };
 
 //upload recipe to DB
@@ -429,6 +438,17 @@ app.get("/api/recipes/:id", (req, res, next) => {
     })
     .catch((err) => {
       res.status(400).json({ message: `Encountered error: ${err}` });
+    });
+});
+
+app.get("/api/recipes/random/:count", (req, res, next) => {
+  const count = req.params.count;
+  fetchRandomRecipes(count)
+    .then((recipes) => {
+      res.status(200).json(recipes);
+    })
+    .catch((err) => {
+      res.status(400).json({ message: `Encountereted error: ${err}` });
     });
 });
 

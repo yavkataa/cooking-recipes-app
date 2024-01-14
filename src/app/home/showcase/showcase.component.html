@@ -1,0 +1,15 @@
+<div class="showcase-wrapper">
+  @for (recipe of this.recipes; track $index) {
+  <a href="recipes/recipe/{{recipe._id}}">
+    <div class="recipe-card">
+      <div class="recipe-card-field title">
+        <h2>{{ recipe.title }}</h2>
+      </div>
+      <div class="recipe-card-field">
+        <img src="{{ recipe.images[0].url }}" alt="" />
+      </div>
+      <div class="recipe-card-field">{{ recipe.description }}</div>
+    </div>
+  </a>
+  }
+</div>
