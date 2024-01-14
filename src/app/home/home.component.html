@@ -1,21 +1,41 @@
 <div class="wrapper">
-    <div class="home-card">
-        @if (!this.localStorage.getItem('username')) {
-        <p class="home-content">Hello and welcome to CooksCooks! The best website for sharing cooking recipes yet!</p>
+  <div class="home-card">
+    @if (!this.localStorage.getItem('username')) {
+    <p class="home-content">
+      Hello and welcome to CooksCooks! The best website for sharing cooking
+      recipes yet!
+    </p>
 
-        <p>Here you can <a href="recipes">browse delicious recipes</a> posted by our users, <a
-                href="register">register</a> for an account, or <a href="login">login</a> and post your own recipes.</p>
+    <p>
+      Here you can <a href="recipes">browse delicious recipes</a> posted by our
+      users, <a href="register">register</a> for an account, or
+      <a href="login">login</a> and post your own recipes.
+    </p>
 
-        <p>We hope you enjoy your stay!</p>
-        }
+    <p>We hope you enjoy your stay!</p>
+    } @if (this.localStorage.getItem('username')) {
+    <p class="home-content">
+      Hello {{ this.localStorage.getItem("name") }} and welcome to CooksCooks!
+      The best website for sharing cooking recipes yet!
+    </p>
 
-        @if (this.localStorage.getItem('username')) {
-        <p class="home-content">Hello {{this.localStorage.getItem('name')}} and welcome to CooksCooks! The best website for sharing cooking recipes yet!</p>
+    <p>
+      Here you can <a href="recipes">browse delicious recipes</a> posted by our
+      users, <a href="recipes/new-recipe">post a new recipe</a> or
+      <a href="recipes/user/{{ this.localStorage.getItem('_id') }}"
+        >view recipes posted by you</a
+      >.
+    </p>
 
-        <p>Here you can <a href="recipes">browse delicious recipes</a> posted by our users, <a href="recipes/new-recipe">post a new recipe</a> or <a href="recipes/user/{{this.localStorage.getItem('_id')}}">view recipes posted by you</a>.
+    <p>We hope you enjoy your stay!</p>
+    }
+  </div>
+</div>
 
-        <p>We hope you enjoy your stay!</p>
-        }
+<h1>Some recipes posted by our users:</h1>
 
-    </div>
+<div class="showcase-wrapper">
+  <div class="recipe-showcase">
+    <app-showcase></app-showcase>
+  </div>
 </div>

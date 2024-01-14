@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-const ORIGIN = "https://www.cookscooks.xyz"
+const ORIGIN = "https://www.cookscooks.xyz";
 const {
   MONGO_STRING,
   MONGO_STRING_OPTIONS,
@@ -298,6 +298,17 @@ const getOneRecipe = async (id) => {
   return recipe;
 };
 
+//fetch N number of random recipes
+
+const fetchRandomRecipes = async (number) => {
+  const recipes = await client
+    .db(DB_NAME)
+    .collection(RECIPE_COLLECTION)
+    .aggregate([{ $sample: { size: Number(number) } }])
+    .toArray();
+  return recipes;
+};
+
 //fetch recipes posted by specific user
 const getUserRecipes = async (id) => {
   const userRecipes = await client
@@ -425,6 +436,17 @@ app.get("/api/recipes/:id", (req, res, next) => {
     })
     .catch((err) => {
       res.status(400).json({ message: `Encountered error: ${err}` });
+    });
+});
+
+app.get("/api/recipes/random/:count", (req, res, next) => {
+  const count = req.params.count;
+  fetchRandomRecipes(count)
+    .then((recipes) => {
+      res.status(200).json(recipes);
+    })
+    .catch((err) => {
+      res.status(400).json({ message: `Encountereted error: ${err}` });
     });
 });
 

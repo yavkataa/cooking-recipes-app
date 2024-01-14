@@ -65,6 +65,10 @@ export class ApiService {
     return this.http.get<User>(`${SERVER_ADDRESS}/user/${id}`);
   }
 
+  getRandomRecipes(count: number): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(`${SERVER_ADDRESS}/recipes/random/${count}`);
+  }
+
   postRecipe(
     title: string,
     image: {}[],
@@ -110,10 +114,14 @@ export class ApiService {
     return this.http.get<Comment[]>(`${SERVER_ADDRESS}/comments/${id}`);
   }
 
-  postComment(comment: {}): Observable<{_id: string}> {
-    return this.http.post<{_id: string}>(`${SERVER_ADDRESS}/post-comment`, comment, {
-      withCredentials: true,
-    });
+  postComment(comment: {}): Observable<{ _id: string }> {
+    return this.http.post<{ _id: string }>(
+      `${SERVER_ADDRESS}/post-comment`,
+      comment,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   deleteComment(id: string): Observable<{}> {
