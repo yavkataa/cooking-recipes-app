@@ -16,13 +16,17 @@ import { RecipeTagsFilterComponent } from './recipe-tags-filter/recipe-tags-filt
 export class RecipesComponent implements OnInit {
   api: ApiService;
   recipes: Recipe[];
+  allRecipes: Recipe[];
   activatedRoute: ActivatedRoute;
   tags: string[];
+  appliedTags: string[];
   constructor(api: ApiService, activatedRoute: ActivatedRoute) {
     this.api = api;
     this.recipes = [];
+    this.allRecipes = [];
     this.activatedRoute = activatedRoute;
     this.tags = [];
+    this.appliedTags = [];
   }
 
   findUniqueRecipeTags(recipes: Recipe[]): string[] {
@@ -37,8 +41,23 @@ export class RecipesComponent implements OnInit {
         }
       }
     }
-    console.log(tagArray);
     return tagArray;
+  }
+
+  addTagToDisplay(tag: any) {
+    if (!this.appliedTags.includes(tag)) {
+      this.appliedTags.push(tag);
+    } else {
+      const index = this.appliedTags.indexOf(tag);
+      this.appliedTags.splice(index, 1);
+    }
+  }
+
+  checkArrayIncludes(arr: string[], values: string[]): boolean {
+    if (!arr || !values) {
+      return false;
+    }
+    return values.some(v => arr.includes(v));
   }
 
   ngOnInit(): void {
@@ -48,6 +67,7 @@ export class RecipesComponent implements OnInit {
       this.api.loading = true;
       this.api.getRecipes().subscribe({
         next: (recipes) => {
+          this.allRecipes = recipes;
           this.recipes = recipes;
           this.tags = this.findUniqueRecipeTags(recipes);
           this.api.loading = false;
@@ -68,6 +88,7 @@ export class RecipesComponent implements OnInit {
           this.api.loading = false;
           this.tags = this.findUniqueRecipeTags(recipes);
           this.recipes = recipes;
+          this.allRecipes = recipes;
         },
         error: (err) => {
           this.api.loading = false;

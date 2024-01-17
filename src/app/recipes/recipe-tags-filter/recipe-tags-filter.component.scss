@@ -1,6 +1,10 @@
 .tags-filter {
   .tags {
     padding: 5px;
+    animation: 1s ease-in-out 0s 1 fadeIn;
+    .selected {
+      background-color: #86643f !important;
+    }
     .tag {
       display: inline-block;
       max-width: fit-content;
@@ -15,8 +19,16 @@
         transition-duration: 0.2s;
         background-color: #b5895a;
         cursor: pointer;
-      }      
+      }
     }
   }
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 100%;
+  }
+}
