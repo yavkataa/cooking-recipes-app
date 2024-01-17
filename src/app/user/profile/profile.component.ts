@@ -38,6 +38,9 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.api.loading) {
+      this.api.loading = false;
+    }
     const userId = this.activatedRoute.snapshot.params['id'];
     if (userId) {
       this.specificUser = true;

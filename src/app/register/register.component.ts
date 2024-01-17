@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -16,7 +16,7 @@ import { ApiService } from '../api.service';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   router: Router;
   api: ApiService;
   constructor(router: Router, api: ApiService) {
@@ -29,10 +29,7 @@ export class RegisterComponent {
       Validators.required,
       Validators.minLength(4),
     ]),
-    name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(4)
-    ]),
+    name: new FormControl('', [Validators.required, Validators.minLength(4)]),
     passwordGroup: new FormGroup({
       password: new FormControl('', [
         Validators.required,
@@ -44,6 +41,12 @@ export class RegisterComponent {
       ]),
     }),
   });
+
+  ngOnInit(): void {
+    if (this.api.loading) {
+      this.api.loading = false;
+    }
+  }
 
   submitForm() {
     const registerUser = this.registerForm.controls.username.value;
@@ -78,7 +81,11 @@ export class RegisterComponent {
     }
 
     this.api.loading = true;
-    let result = this.api.register(registerUser, registerPassword, registerName);
+    let result = this.api.register(
+      registerUser,
+      registerPassword,
+      registerName
+    );
 
     result.subscribe({
       next: (result) => {
@@ -86,8 +93,8 @@ export class RegisterComponent {
         this.api.clearLoggedUserData();
         this.api.storeLoggedUserData(result);
         this.router.navigate(['home']);
-      }
-    })
+      },
+    });
 
     // this.router.navigate(['home']);
   }

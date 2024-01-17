@@ -1,0 +1,22 @@
+.tags-filter {
+  .tags {
+    padding: 5px;
+    .tag {
+      display: inline-block;
+      max-width: fit-content;
+      padding: 10px;
+      background-color: #dabc93;
+      border-radius: 15px;
+      color: white;
+      text-shadow: 2px 2px 3px black;
+
+      &:hover {
+        transition-property: background-color;
+        transition-duration: 0.2s;
+        background-color: #b5895a;
+        cursor: pointer;
+      }      
+    }
+  }
+}
+

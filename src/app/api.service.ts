@@ -174,10 +174,16 @@ export class ApiService {
     });
     result.subscribe({
       next: () => {
+        if (this.loading) {
+          this.loading = false;
+        }
         this.clearLoggedUserData();
         this.router.navigate(['home']);
       },
       error: (err) => {
+        if (this.loading) {
+          this.loading = false;
+        }
         if (err.status !== 0) {
           console.log(err);
         }

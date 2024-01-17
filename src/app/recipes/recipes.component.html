@@ -1,3 +1,6 @@
+<div class="tags-filter">
+  <app-recipe-tags-filter [tags]="tags"></app-recipe-tags-filter>
+</div>
 <div class="recipes">
 @for (recipe of this.recipes; track $index) {
   <app-recipe-card [recipe]="recipe"></app-recipe-card>

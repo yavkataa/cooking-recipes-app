@@ -2,18 +2,24 @@
   <div class="nav-element title">CooksCooks</div>
 
   <div class="nav-element buttons">
-    <a href="home">Home</a>
-    <a href="about">About</a>
-    <a href="contacts">Contacts</a>
-    <a href="recipes">Recipes</a>
+    <a href="home" (click)="this.api.loading = true">Home</a>
+    <a href="about" (click)="this.api.loading = true">About</a>
+    <a href="contacts" (click)="this.api.loading = true">Contacts</a>
+    <a href="recipes" (click)="this.api.loading = true">Recipes</a>
 
     @if (this.localStorage.getItem('loggedIn') != 'true') {
-    <a href="login">Login</a>
-    <a href="register">Register</a>
+    <a href="login" (click)="this.api.loading = true">Login</a>
+    <a href="register" (click)="this.api.loading = true">Register</a>
     } @if (this.localStorage.getItem('loggedIn') == 'true') {
-    <a href="recipes/user/{{ this.localStorage.getItem('_id') }}">My Recipes</a>
-    <a href="recipes/new-recipe">Post new recipe</a>
-    <a href="" (click)="this.api.logout()">Logout</a>
+    <a
+      href="recipes/user/{{ this.localStorage.getItem('_id') }}"
+      (click)="this.api.loading = true"
+      >My Recipes</a
+    >
+    <a href="recipes/new-recipe" (click)="this.api.loading = true"
+      >Post new recipe</a
+    >
+    <a href="" (click)="this.api.logout(); this.api.loading = true">Logout</a>
     }
   </div>
 

@@ -10,7 +10,7 @@ import { ShowcaseComponent } from './showcase/showcase.component';
   standalone: true,
   imports: [CommonModule, RouterModule, ShowcaseComponent],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  styleUrl: './home.component.scss',
 })
 export class HomeComponent {
   api: ApiService;
@@ -22,9 +22,5 @@ export class HomeComponent {
 
   logs() {
     console.log(this.api.loggedIn);
-  }
-
-  fetchRandomRecipes(count: number): void {
-
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -18,7 +18,7 @@ import { Tags } from '../../../../assets/tags/tags';
   templateUrl: './new-recipe.component.html',
   styleUrl: './new-recipe.component.scss',
 })
-export class NewRecipeComponent {
+export class NewRecipeComponent implements OnInit {
   localStorage: LocalStorageService;
   api: ApiService;
   router: Router;
@@ -49,6 +49,12 @@ export class NewRecipeComponent {
     ingredients: new FormControl('', [Validators.required]),
     tags: new FormControl(''),
   });
+
+  ngOnInit(): void {
+    if (this.api.loading) {
+      this.api.loading = false;
+    }
+  }
 
   updateTags(): void {
     this.foundTags = [];
@@ -128,7 +134,7 @@ export class NewRecipeComponent {
         },
         error: (err) => {
           this.api.loading = false;
-          if ((err.status = 401)) {            
+          if ((err.status = 401)) {
             this.api.clearLoggedUserData();
             this.router.navigate(['home']);
           }
