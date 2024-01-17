@@ -17,7 +17,6 @@ input {
 
 .input-field {
   padding: 10px;
-  
 }
 
 textarea {
@@ -43,6 +42,12 @@ button,
   padding: 10px;
   border-radius: 15px;
   margin-top: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: lightgray;
+    transition-property: background-color;
+    transition-duration: 0.3s;
+  }
 }
 
 .ingredients {

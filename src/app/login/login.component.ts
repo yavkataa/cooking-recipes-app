@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormControl,
@@ -18,7 +18,7 @@ import { HttpClientModule } from '@angular/common/http';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   router: Router;
   api: ApiService;
   constructor(router: Router, api: ApiService) {
@@ -36,6 +36,12 @@ export class LoginComponent {
       Validators.minLength(10),
     ]),
   });
+
+  ngOnInit(): void {
+    if (this.api.loading) {
+      this.api.loading = false;
+    }
+  }
 
   submitForm(): void {
     const loginUser = this.loginForm.controls.username.value;

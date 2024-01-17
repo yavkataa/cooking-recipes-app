@@ -316,6 +316,7 @@ const getUserRecipes = async (id) => {
 const fetchRandomRecipes = async (number) => {
   const recipes = await client
     .db(DB_NAME)
+    .collection(RECIPE_COLLECTION)
     .aggregate([{ $sample: { size: Number(number) } }])
     .toArray();
   return recipes;

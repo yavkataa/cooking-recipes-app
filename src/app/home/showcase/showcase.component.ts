@@ -19,12 +19,15 @@ export class ShowcaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.api.loading = true;
     this.api.getRandomRecipes(3).subscribe({
       next: (recipes) => {
+        this.api.loading = false;
         this.recipes = recipes;
       },
       error: (err) => {
         if (err.status !== 0) {
+          this.api.loading = false;
           console.log(err);
         }
       },
