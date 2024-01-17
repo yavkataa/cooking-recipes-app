@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Recipe } from '../../types/Recipe';
+import { ApiService } from '../../api.service';
 
 @Component({
   selector: 'app-recipe-card',
@@ -26,4 +27,10 @@ export class RecipeCardComponent {
     authorId: '',
     tags: [''],
   };
+
+  api: ApiService;
+
+  constructor(api: ApiService) {
+    this.api = api;
+  }
 }

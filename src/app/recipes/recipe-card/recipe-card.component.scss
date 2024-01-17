@@ -19,19 +19,23 @@
   transition-property: background-color;
   transition-duration: 0.2s;
   background-color: #b5895a;
+  img {
+    transition: transform 0.5s;
+    transform: scale(1.05);
+  }
 }
-
-
 
 .image {
   max-width: 40%;
   max-height: 100%;
   width: 100%;
+  border-radius: 15px;
   display: inline-block;
+  overflow: hidden;
   img {
     max-height: 100%;
     max-width: 100%;
-    border-radius: 15px;
+
     height: 100%;
     object-fit: cover;
   }

@@ -19,7 +19,7 @@
     <a href="recipes/new-recipe" (click)="this.api.loading = true"
       >Post new recipe</a
     >
-    <a href="" (click)="this.api.logout(); this.api.loading = true">Logout</a>
+    <a href="" (click)="$event.preventDefault(); this.api.logout(); this.api.loading = true">Logout</a>
     }
   </div>
 
