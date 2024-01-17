@@ -1,4 +1,4 @@
-<a href="recipes/recipe/{{recipe._id}}">
+<a href="recipes/recipe/{{recipe._id}}" (click)="this.api.loading = true">
   <div class="recipe-card">
     <div class="image">
       <img src="{{ recipe.images[0].url }}" alt="" />

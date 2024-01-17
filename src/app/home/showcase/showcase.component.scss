@@ -41,6 +41,10 @@
           overflow: hidden;
           border-radius: 15px;
           object-fit: cover;
+          &:hover {
+            transition: transform 0.5s;
+            transform: scale(1.05);
+          }
         }
       }
 
